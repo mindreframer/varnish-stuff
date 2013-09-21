@@ -5,6 +5,7 @@ https://github.com/camptocamp/puppet-varnish.git
 https://github.com/csfrancis/libvmod-redis.git
 https://github.com/dot2code/varnish-bans-manager.git
 https://github.com/dreamhost/varnish-vcl-collection.git
+https://github.com/Dridi/libvmod-querystring.git
 https://github.com/flygoast/libvmod-lua.git
 https://github.com/Fotolia/varnishops.git
 https://github.com/hellvinz/purger.git
@@ -37,4 +38,3 @@ https://github.com/varnish/Varnish-Book.git
 https://github.com/varnish/varnishgather.git
 https://github.com/vimeo/libvmod-boltsort.git
 https://github.com/xcir/libvmod-ldap.git
-https://github.com/Dridi/libvmod-querystring.git
