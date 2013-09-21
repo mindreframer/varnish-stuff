@@ -13,6 +13,10 @@
 
        83 commits, last change: 2013-09-10 06:23:03, 39 stars, 25 forks
 
+    dot2code/varnish-bans-manager:
+      Varnish Bans Manager (VBM) is a simple server and web UI designed to ease management of bans in complex Varnish deployments
+       165 commits, last change: 2013-05-13 03:12:45, 13 stars, 1 forks
+
     Fotolia/varnishops:
       a CLI realtime varnish traffic analyzer
        18 commits, last change: 2013-05-28 01:30:26, 9 stars, 3 forks
@@ -20,6 +24,10 @@
     inviqa/chef-varnish:
       Chef cookbook that configures the varnish-cache.org repos for apt or yum and installs and configures Varnish 3.* based on the defined attributes.
        25 commits, last change: 2012-10-17 08:03:42, 6 stars, 8 forks
+
+    madepeople/Made_Cache:
+      Advanced Block Cache module for Magento that supports Varnish + ESI
+       38 commits, last change: 2013-08-28 08:46:34, 23 stars, 6 forks
 
     pad92/varnish:
       Varnish minimal configuration (use builtin for best performances)
@@ -36,6 +44,10 @@
     robszumski/varnish_etcd:
       Dynamically apply Varnish VCL based on data from etcd
        3 commits, last change: 2013-09-04 22:19:25, 0 stars, 0 forks
+
+    samlbits/puppet-varnish:
+      A varnish module for the samlbits.net CDN
+       50 commits, last change: 2013-09-19 12:33:02, 0 stars, 0 forks
 
     ThijsFeryn/varnishtraining:
       Vagrant box including VCL's  examples for my Varnish training
