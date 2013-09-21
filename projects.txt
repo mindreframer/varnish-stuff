@@ -14,3 +14,4 @@ https://github.com/varnish/newrelic_varnish_plugin.git
 https://github.com/varnish/vagent2.git
 https://github.com/varnish/Varnish-Book.git
 https://github.com/varnish/varnishgather.git
+https://github.com/luctus/chef-varnish-dashboard.git
