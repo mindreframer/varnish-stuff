@@ -6,6 +6,7 @@ https://github.com/Fotolia/varnishops.git
 https://github.com/hellvinz/purgerd.git
 https://github.com/inviqa/chef-varnish.git
 https://github.com/jcihocki/varnishd-skillshare.git
+https://github.com/jib/libvmod-statsd.git
 https://github.com/jib/libvmod-timers.git
 https://github.com/kenshaw/libvmod-dns.git
 https://github.com/luctus/chef-varnish-dashboard.git
@@ -23,4 +24,3 @@ https://github.com/varnish/Varnish-Book.git
 https://github.com/varnish/varnishgather.git
 https://github.com/vimeo/libvmod-boltsort.git
 https://github.com/xcir/libvmod-ldap.git
-https://github.com/jib/libvmod-statsd.git
