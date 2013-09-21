@@ -10,7 +10,7 @@ else
 end
 
 def remote_name(git_url)
-  "remote_#{git_url.split("/").last[0..-5]}"
+  "remote_#{git_url.split("/").last[0..-5]}_#{git_url.split("/")[-2]}"
 end
 
 def name(git_url)
