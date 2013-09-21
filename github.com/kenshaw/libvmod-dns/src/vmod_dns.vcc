@@ -1,0 +1,4 @@
+Module dns 
+Init init_function
+Function STRING resolve(STRING)
+Function STRING rresolve(STRING)

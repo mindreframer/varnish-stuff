@@ -1,0 +1,19 @@
+reap with: 
+```
+varnishlog -c -m RxHeader:'(?i)^User-Agent:.*(googlebot|bingbot|slurp).*'|egrep '(X-Forwarded-For|User-Agent)'
+```
+
+sample seen (good):
+```
+139 RxHeader     c User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
+139 RxHeader     c X-Forwarded-For: 66.249.74.110
+106 RxHeader     c User-Agent: Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)
+106 RxHeader     c X-Forwarded-For: 157.55.33.80
+```
+
+sample seen (bad):
+
+
+example tests:
+
+curl -v -H 'User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)' -H 'X-Forwarded-For: 66.249.74.110' 'http://localhost:6081/'

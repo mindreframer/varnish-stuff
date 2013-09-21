@@ -1,0 +1,24 @@
+varnishtest "Test libvmod-dns rresolve"
+
+server s1 {
+       rxreq
+       txresp
+} -start
+
+varnish v1 -vcl+backend {
+	import dns from "${vmod_topbuild}/src/.libs/libvmod_dns.so";
+
+	sub vcl_deliver {
+		set resp.http.rresolve1 = dns.rresolve("8.8.8.8");
+		set resp.http.rresolve2 = dns.rresolve("8.8.4.4");
+	}
+} -start
+
+client c1 {
+	txreq -url "/"
+	rxresp
+	expect resp.http.rresolve1 == "google-public-dns-a.google.com"
+	expect resp.http.rresolve2 == "google-public-dns-b.google.com"
+}
+
+client c1 -run
