@@ -20,3 +20,4 @@ https://github.com/varnish/Varnish-Book.git
 https://github.com/varnish/varnishgather.git
 https://github.com/vimeo/libvmod-boltsort.git
 https://github.com/xcir/libvmod-ldap.git
+https://github.com/kenshaw/libvmod-dns.git
