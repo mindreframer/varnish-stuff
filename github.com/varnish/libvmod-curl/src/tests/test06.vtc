@@ -1,0 +1,35 @@
+varnishtest "curl: header_add"
+
+server s1 {
+	rxreq
+	expect req.http.foo == "bar"
+	txresp
+	accept
+	rxreq
+	expect req.http.extra == "1"
+	expect req.http.foo != "bar"
+	txresp
+} -start
+
+varnish v1 -vcl+backend {
+	import curl from "${vmod_topbuild}/src/.libs/libvmod_curl.so";
+	sub vcl_recv {
+		if (req.http.extra) {
+		   curl.header_add("extra: 1");
+		} else {
+		    curl.header_add("foo: bar");
+		}
+		curl.get("http://${s1_addr}:${s1_port}");
+		error 200;
+	}
+} -start
+
+client c1 {
+	txreq -url "/"
+	rxresp
+} -run
+
+client c2 {
+	txreq -url "/" -hdr "Extra: 1"
+	rxresp
+} -run
