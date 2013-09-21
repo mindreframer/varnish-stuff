@@ -43,6 +43,10 @@
       Varnish Bans Manager (VBM) is a simple server and web UI designed to ease management of bans in complex Varnish deployments
        165 commits, last change: 2013-05-13 03:12:45, 13 stars, 1 forks
 
+    dreamhost/varnish-vcl-collection:
+      Collection of Varnish VCL files
+       5 commits, last change: 2013-09-05 17:50:13, 5 stars, 0 forks
+
     Fotolia/varnishops:
       a CLI realtime varnish traffic analyzer
        18 commits, last change: 2013-05-28 01:30:26, 9 stars, 3 forks
