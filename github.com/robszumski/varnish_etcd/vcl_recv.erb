@@ -1,0 +1,27 @@
+# Construct a backend for each container's IP
+<% etcd_response.each_with_index do |domain, index| %>
+  <% domain["value"].delete("[]").split(",").each_with_index do |ip_address, number|  %>
+backend <%= domain["key"].split('/')[-1] + number.to_s  %> {
+    .host = "<%= ip_address.delete('"').split(":")[0] %>";
+    .port = "<%= ip_address.delete('"').split(":")[1] %>";
+}
+  <% end %>
+
+director <%= domain["key"].split('/')[-1] %> round-robin {
+  <% domain["value"].delete("[]").split(",").each_with_index do |ip_address, number|  %>
+  {
+    .backend = <%= domain["key"].split('/')[-1] + number.to_s %>;
+  }
+  <% end %>
+}
+<% end %>
+
+# Respond to incoming requests and route accordingly
+sub vcl_recv {
+  <% etcd_response.each_with_index do |domain, index| %>
+  if (req.http.host == "<%= domain["key"].split('/')[-1] %>") {
+        set req.backend = <%= domain["key"].split('/')[-1] %>;
+        return (lookup);
+  }
+  <% end %>
+}
