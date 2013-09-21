@@ -1,0 +1,363 @@
+#!/bin/sh
+# varnish_gather - Gather debug information for varnish issues
+# Copyright (C) 2010-2013 Varnish Software AS
+# Author: Kristian Lyngstol <kristian@varnish-cache.org>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+#
+# Mostly harmless.
+
+export LC_ALL=C
+
+
+# Defines
+
+HOSTPORT=""
+NAME=""
+VARNISHADMARG=""
+SECRET=""
+ITEM=0
+TOPDIR="$(mktemp -d /tmp/varnishgather.XXXXXXXX)"
+ID="$(hostname)-$(date +'%Y-%m-%d')"
+RELDIR="varnishgather-${ID}"
+DIR="${TOPDIR}/${RELDIR}"
+LOG="${DIR}/varnishgather.log"
+ORIGPWD=$PWD
+
+# Set up environment
+
+mkdir -p ${DIR}
+cd ${DIR}
+
+cleanup () {
+    rm -rf "$TOPDIR"
+}
+trap cleanup EXIT
+
+# Helpers
+
+# Takes a string, translates it into something we can use as a log
+# file name
+
+item_num() {
+    printf "%.2d" "$ITEM"
+}
+
+logname() {
+    echo "$@" | tr -c '[:alnum:]-' '[_*]' | sed 's/_*$//'
+}
+
+log()
+{
+	echo >>${LOG} "$@"
+}
+
+info()
+{
+	echo 1>&2 "$@"
+	log "$@"
+}
+
+banner()
+{
+	log "--------------------------------"
+	log "Item $ITEM: $@"
+	log "--------------------------------"
+	ITEM=$(( $ITEM + 1 ))
+	echo "Task: ${ITEM}: $*"
+}
+
+run()
+{
+	OLDLOG="$LOG"
+	LOG="${DIR}/$(item_num)_$(logname "$@")"
+	banner "$@"
+	("$@") >> ${LOG} 2>&1
+	LOG="$OLDLOG"
+}
+
+runpipe_recurse() {
+	CMD="$1";
+	shift;
+	if [ "x$*" = "x" ]; then
+		${CMD} 2>&1
+	else
+		${CMD} 2>&1 | runpipe_recurse "$@"
+	fi
+}
+
+pipeprint()
+{
+	CMD="$1";
+	shift;
+	if [ "x$*" = "x" ]; then
+		echo ${CMD}
+	else
+		echo ${CMD} "|" $(pipeprint "$@")
+	fi
+
+
+}
+runpipe()
+{
+	OLDLOG="$LOG"
+	LOG="${DIR}/$(item_num)_$(logname "$@")"
+	banner $(pipeprint "$@")
+	runpipe_recurse "$@" >> ${LOG} 2>&1
+	LOG="$OLDLOG"
+}
+
+mycat()
+{
+	if [ -r $1 ]; then
+		run cat $1
+	fi
+}
+
+vadmin()
+{
+	if [ ! -z "${VARNISHADMARG}" ]; then
+		run varnishadm ${VARNISHADMARG} $* 2>/dev/null
+	fi
+}
+
+vadmin_getvcls()
+{
+	if [ ! -z "${VARNISHADMARG}" ]; then
+		varnishadm ${VARNISHADMARG} vcl.list | awk '{print $3}' 2>/dev/null
+	fi
+}
+
+findvcls() {
+	include_vcls=$(sed -e '/^include /!d; s/include\s*//g; s/[\";]//g' /etc/varnish/*.vcl)
+
+	vcls=$(for file in $include_vcls /etc/varnish/*.vcl; do
+		is_absolute=$(echo $file | sed -e '/^\//!d')
+		if [ -z "$is_absolute" ]; then
+			file="/etc/varnish/$file"
+		fi
+
+		if [ -e "$file" ]; then
+			echo $file;
+		fi
+	done | sort | uniq)
+
+	echo $vcls
+}
+
+getarg() {
+	ret=""
+	if ! which awk >/dev/null; then
+		info "awwww. No awk found. Automatic argument detection disabled."
+		return
+	fi
+	for a in `pgrep varnishd`; do
+		if [ ! -d /proc/${a} ]; then
+			info "proc nonfunctional. Automatic argument detection disabled."
+			return
+		fi
+		tmpret=$(awk -v RS='\\x00' -v arg=$1 's == 1 { sec=$0 }; $0 == arg {s=1}$0 != arg  {s=0} END { print sec };' /proc/${a}/cmdline)
+		if [ x$ret != "x" ] && [ $ret != $tmpret ]; then
+			log "Weird argument mismatch: $ret vs $tmpret found"
+			info "(Using last found/listed)"
+		fi
+		ret=${tmpret}
+	done
+	echo ${ret}
+}
+
+usage() {
+	cat <<_EOF_
+Usage: $0 [-n name] [-T host:port] [-S secretfile] [-h]
+
+Varnishgather gathers various system information into a single
+tar-ball.
+
+ -n <name>            Provide the name, same as the -n argument to varnishd
+ -T <host:port>       Provide host and port for the management interface
+                      Same as the -T option to varnishd.
+ -S <secretfile>      Provide a secret file, same as -S to varnishd.
+ -h                   Show this text.
+
+All arguments are optional. varnishgather will attempt to detect the
+arguments automatically, but will likely be confused if you have multiple
+varnish servers running. In other words: Use -T, -n and -S if you have
+multiple varnishd servers running on the same server.
+_EOF_
+	exit 1
+}
+
+if [ "$(id -u)" -ne "0" ]; then
+    echo "#######################################################"
+    echo "Running as non-root, the results might not be complete."
+    echo "Please run again as root."
+    echo "#######################################################"
+    sleep 10
+fi
+
+##############################
+# Proper execution starts here
+##############################
+
+info "Working directory: ${DIR}"
+
+TEMP=`getopt n:T:S:h "$@"`
+
+if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
+
+eval set -- "$TEMP"
+
+while true ; do
+        case "$1" in
+                -n) NAME=$2 ; shift 2;;
+                -T) HOSTPORT=$2; shift 2;;
+		-S)
+			if [ -r $2 ]; then
+				SECRET="-S $2";
+			else
+				info "Secret file $2 not readable."
+				exit 1;
+			fi
+			shift 2;;
+                -h) usage; exit 0 ;;
+                --) shift; break;;
+                *) echo "internal error"; exit 1;;
+        esac
+done
+if [ -z "$HOSTPORT" ]; then
+	HOSTPORT=$(getarg -T)
+	if [ -z "$HOSTPORT" ]; then
+		info "Without a hostname:port for the admin interface, this script is less useful"
+	else
+		info "Found hostport(-T argument): ${HOSTPORT}"
+		HOSTPORT="-T ${HOSTPORT}"
+	fi
+fi
+
+if [ -z "$SECRET" ]; then
+	sec=$(getarg -S)
+	if [ ! -z ${sec} ]; then
+		if [ -r ${sec} ]; then
+			info "Found secretfile(-S argument) ${sec} and it's readable. Using it."
+			SECRET="-S ${sec}"
+		elif [ -f /etc/varnish/secret ]; then
+			info "Found secretfile(-S argument) ${sec} but it's not readable"
+		fi
+	else
+		info "Didn't find any -S argument"
+	fi
+fi
+
+STATCMD=""
+if [ -z "$NAME" ]; then
+	NAMEARG=$(getarg -n)
+	if [ ! -z "$NAMEARG" ]; then
+		info "Found name: $NAMEARG"
+		NAME="$NAMEARG"
+	else
+		info "No -n argument found."
+	fi
+fi
+
+if [ ! -z "$NAME" ]; then
+	STATCMD="-n $NAME"
+fi
+
+VARNISHADMARG="${SECRET} ${HOSTPORT}"
+info "Complete varnishadm command line deduced to: ${VARNISHADMARG}"
+run date
+run dmesg
+mycat /var/log/dmesg
+
+for a in /var/log/messages /var/log/syslog; do
+	if [ -r "$a" ]; then
+		run grep varnish "$a"
+	fi
+done
+
+mycat /proc/cpuinfo
+mycat /proc/version
+
+runpipe "ps aux" "egrep (varnish|apache|mysql|nginx|httpd|stud|stunnel)"
+runpipe "netstat -np" "wc -l"
+runpipe "netstat -np" "grep ESTABLISHED" "wc -l"
+run free -m
+run vmstat 5 5
+run lsb_release -a
+run sysctl -a
+run varnishstat -V
+run dpkg -l \*varnish\*
+runpipe "rpm -qa" "grep varnish"
+run netstat -s
+run ip a
+run ip n
+run ip r
+run ip -s l
+run uname -a
+run mount
+run df -h
+run varnishstat -1 $STATCMD
+
+NETSTAT="/bin/netstat"
+if [ -x "$NETSTAT" ]; then
+	run "${NETSTAT}" -nlpt
+	run "${NETSTAT}" -np
+fi
+
+run iptables -n -L
+
+for a in $(findvcls); do
+	mycat $a
+done
+
+mycat /etc/default/varnish
+mycat /etc/sysconfig/varnish
+mycat /proc/$(pgrep -n varnishd)/limits
+
+for pid in $(pidof varnishd); do
+    runpipe "awk '$2 ~ \"rw\"' /proc/$pid/maps" "wc -l"
+done
+
+run find /usr/local -name varnish
+
+if [ -z "${VARNISHADMARG}" ]; then
+	banner "NO ADMINPORT SUPPLIED OR FOUND"
+fi
+
+# vadmin() tests for VARNISHADMARG as necessary
+
+vadmin vcl.list
+vcls="$(vadmin_getvcls)"
+if [ -n "$vcls" ]; then
+	for vcl in $vcls; do
+		vadmin vcl.show "$vcl"
+	done
+fi
+
+vadmin param.show
+vadmin purge.list
+vadmin ban.list
+vadmin debug.health
+vadmin panic.show
+
+run varnishlog -d -k 20000 -w "${DIR}/varnishlog.raw" $STATCMD
+
+cd "$ORIGPWD"
+TGZ="varnishgather.${ID}.tar.gz"
+tar czf "$TGZ" -C "$TOPDIR" "$RELDIR"
+echo "==============================================================================="
+echo "Please submit the file: $TGZ"
+echo "==============================================================================="
