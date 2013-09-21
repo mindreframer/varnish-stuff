@@ -19,6 +19,7 @@
   - [Varnish module to send statistics to statsd](https://github.com/jib/libvmod-statsd.git)
   - [A Varnish module that allows sending commands to redis from the VCL](https://github.com/csfrancis/libvmod-redis.git)
   - [A varnish vmod for simpler use of the cookie header](https://github.com/lkarsten/libvmod-cookie.git)
+  - [Varnish lua vmod to execute lua script in VCL](https://github.com/flygoast/libvmod-lua.git)
 
 
 <!-- PROJECTS_LIST_START -->
