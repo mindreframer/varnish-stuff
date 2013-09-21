@@ -1,0 +1,67 @@
+v0.5, 13/05/2013
+----------------
+
+  - Upgrade to Django 1.5.
+  - Improved Vagrant env.
+  - Minor bugfixes.
+
+v0.4.3, 17/01/2013
+------------------
+
+  - Upgrade JS & CSS libraries.
+
+v0.4.2, 16/01/2013
+------------------
+
+  - ES translation.
+  - Fixed broken e-mail exception notifications.
+
+v0.4.1, 15/01/2013
+------------------
+
+  - Migrations support using South (http://south.aeracode.org/).
+
+v0.4, 14/01/2013
+----------------
+
+  - Bans status section.
+
+v0.3, 11/01/2013
+----------------
+
+  - Cache nodes and groups management from the UI.
+  - Unblocked Celery version (https://github.com/celery/celery/issues/1150#issuecomment-12102949).
+
+v0.2.3, 08/01/2013
+------------------
+
+  - Blocked Celery version. Latest version at the moment (3.0.13) seems to be
+  broken when using a Django DB backend.
+
+v0.2.2, 08/01/2013
+------------------
+
+  - Added browsing & filtering of recent ban submissions.
+  - E-mail notifications with recent ban submissions now uses the default
+  configured language.
+
+v0.2.1, 02/01/2013
+------------------
+
+  - Logging of ban submissions.
+  - Task delivering e-mail notifications with logged ban submissions.
+  - Minor improvements to the DB schema.
+
+v0.2, 12/20/2012
+----------------
+
+  - Fixed sendfile support when using nginx as reverse proxy.
+  - Enabled Django caching framework using the default database as backend.
+  - Fixed bug when exporting users to CSV.
+  - Sightly simplified installation procedure.
+
+
+v0.1, 12/19/2012
+----------------
+
+  - Initial release.
