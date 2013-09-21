@@ -1,0 +1,24 @@
+varnishtest "Test dgram vmod"
+
+server s1 {
+    rxreq
+    txresp
+} -start
+
+varnish v1 -vcl {
+    import dgram from "${topbuild}/src/.libs/libvmod_dgram.so";
+
+    backend default {
+        .host = "${s1_addr}";
+        .port = "${s1_port}";
+    }
+
+    sub vcl_deliver {
+        dgram.send_dgram("hi", "127.0.0.1", 12345);
+    }
+} -start
+
+client c1 {
+    txreq -url "/"
+    rxresp
+} -run
