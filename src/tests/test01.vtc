@@ -1,0 +1,48 @@
+varnishtest "Test statsd vmod"
+
+server s1 {
+       rxreq
+       txresp
+} -start
+
+# XXX I don't know how to test reception of UDP packets from varnish,
+# so for now, these tests just make sure that the process doesn't crash,
+# hang, or do anything else bad
+
+varnish v1 -vcl+backend {
+	import statsd from "${vmod_topbuild}/src/.libs/libvmod_statsd.so";
+
+    sub vcl_init {
+        statsd.server("localhost", "1");    # nothing listens on UDP port 1 right?
+        statsd.prefix("prefix");
+        statsd.suffix("suffix");
+    }
+
+    sub vcl_deliver {
+        statsd.incr(    "incr"          );
+        statsd.gauge(   "gauge",    1234567890  );
+        statsd.timing(  "timing",   1234567890  );
+        statsd.counter( "counter",  1234567890  );
+
+        ### NULL pointers used to crash the module. Verify that bug
+        ### is gone.
+        statsd.incr(    resp.http.x-does-not-exist );
+        statsd.gauge(   resp.http.x-does-not-exist, 1234567890 );
+        statsd.timing(  resp.http.x-does-not-exist, 1234567890 );
+        statsd.counter( resp.http.x-does-not-exist, 1234567890 );
+
+        # So we know we got to at least here.
+        set resp.http.hello = "Hello, World";
+    }
+
+} -start
+
+client c1 {
+	txreq -url "/"
+	rxresp
+	expect resp.http.hello == "Hello, World"
+}
+
+client c1 -run
+
+
