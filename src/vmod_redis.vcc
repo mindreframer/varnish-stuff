@@ -1,0 +1,6 @@
+Module redis
+Init init_function
+Function VOID init_redis(PRIV_VCL, STRING, INT, INT)
+Function VOID send(PRIV_VCL, STRING)
+Function STRING call(PRIV_VCL, STRING)
+Function STRING callv(PRIV_VCL, STRING_LIST)
