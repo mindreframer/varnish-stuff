@@ -20,6 +20,7 @@
   - [Varnish @ VGnet](http://www.vg.no/presentations/slides/VUG2012.html)
   - [Varnish @ Holiday-extras.com](https://www.varnish-cache.org/sites/default/files/10_Varnish_Presentation_Holidays-Extras.pdf)
   - [Varnish @ Opera](http://www.slideshare.net/cstrep/vug5-varnish-at-opera-software/)
+  - [dClass and Varnish](www.rezsoft.org/vug7/dclass.ppt‎)
 
 
 
