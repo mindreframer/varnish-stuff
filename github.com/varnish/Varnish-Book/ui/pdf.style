@@ -1,0 +1,73 @@
+{
+  "pageSetup" : {
+    "firstTemplate": "coverPage"
+  },
+  "pageTemplates" : {
+    "coverPage": {
+        "frames": [
+            ["0cm", "0cm", "100%", "100%"]
+          ],
+        "background" : "ui/img/front_page_book.pdf",
+        "showHeader" : false,
+        "showFooter" : false,
+	"fontSize": 0
+    },
+    "vclPage": {
+        "frames": [
+            ["0cm", "0cm", "100%", "100%"]
+          ],
+        "background" : "ui/img/request.pdf",
+        "showHeader" : false,
+        "showFooter" : false,
+	"fontSize": 0
+    },
+    "introPages": {
+	    "frames": [
+            ["0cm", "0cm", "100%", "100%"]
+          ],
+        "showHeader" : false,
+        "showFooter" : false
+    },
+    "oneColumn": {
+        "showFooter" : true
+    }
+
+  },
+  "styles" : [
+    ["bodytext", {
+	    "borderPadding": 0
+	}
+	],
+    ["title", {
+        "fontName": "White Rabbit",
+        "fontSize": 48
+    }],
+        
+    ["thin" , {
+    "parent" : "bodytext",
+    "width" : "65%",
+    "alignment": "TA_JUSTIFY",
+    "hyphenation": true
+    }
+    ],
+    ["right", {
+        "parent": "bodytext",
+        "alignment": "right"
+    }],
+    ["centered", {
+        "parent": "bodytext",
+        "alignment": "center"
+    }],
+    ["headertable" , {
+    "parent" : "table",
+    "colWidths": ["20%","60%","20%"],
+    "commands": []
+    }
+    ],
+    ["footer" , {
+	    "textColor": "red"
+    }
+    ]
+   ]
+}
+

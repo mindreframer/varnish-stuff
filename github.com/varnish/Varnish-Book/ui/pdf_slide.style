@@ -1,0 +1,47 @@
+{
+  "pageSetup" : {
+    "firstTemplate": "coverPage",
+    "size": null,
+	"width": "218mm",
+	"height": "125mm",
+	"margin-top": "1mm",
+       "margin-bottom": "1mm",
+       "margin-left": "2mm",
+       "margin-right": "2mm",
+       "spacing-header": "5mm",
+       "spacing-footer": "5mm",
+       "margin-gutter": "0cm"
+  },
+  "pageTemplates" : {
+    "coverPage": {
+        "frames": [
+            ["0cm", "0cm", "100%", "100%"]
+          ],
+        "background" : "ui/img/front_page_book.pdf",
+        "showHeader" : false,
+        "showFooter" : false,
+	"fontSize": 0
+    },
+    "vclPage": {
+        "frames": [
+            ["0cm", "0cm", "100%", "100%"]
+          ],
+        "background" : "ui/img/request.pdf",
+        "showHeader" : false,
+        "showFooter" : false,
+	"fontSize": 0
+    },
+    "introPages": {
+	    "frames": [
+            ["0cm", "0cm", "100%", "100%"]
+          ],
+        "showHeader" : false,
+        "showFooter" : false
+    },
+    "oneColumn": {
+	    "showHeader": false,
+	    "showFooter": false
+    }
+  }
+}
+

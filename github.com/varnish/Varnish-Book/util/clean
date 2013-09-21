@@ -1,0 +1,73 @@
+#!/bin/bash 
+
+# Run as root on training-laptop.
+# Requires DHCP! Highly experimental.
+# DELETES ALL CONTENT ON ALL VMS!
+#  - Kristian
+
+AMOUNT=9
+echo "Destroying any running virtual machines. Ignore any error messages about them not running."
+sleep 1
+# Always stop all of them.
+for a in `seq 1 12`; do
+	virsh destroy training$a;
+	sleep 0.1;
+done
+
+echo "Stopping libvirt-bin:"
+service libvirt-bin stop || echo "already stopped?"
+echo "Pids for kvm: (should be blank)"
+pidof kvm
+echo "Hit any key to continue. Or write a poem, that's ok too."
+read tmp
+
+set -e
+echo "Removing old snapshots."
+for a in `seq 1 $AMOUNT`; do
+	lvremove -f /dev/training-laptop/training-snap$a
+	sleep 0.5
+done
+sleep 2
+
+echo "Creating new snapshots."
+for a in `seq 1 $AMOUNT`; do
+	lvcreate --size 4G  --snapshot --name training-snap$a /dev/training-laptop/training1
+	sleep 0.5
+done
+
+echo "Starting libvirt"
+service libvirt-bin start
+sleep 5
+
+pw=squiddo
+rootpw="VHBUhvFHwlkgx5KTj8gPW/"
+echo "Passwordbase: ${pw}"
+echo "Root: ${rootpw}"
+echo "Logging in to machine 2 through $AMOUNT to reset hostnames."
+echo "This will take some time."
+for a in `seq 2 $AMOUNT`; do
+	sleep 5
+	virsh start training$a
+	sleep 25
+	( echo ${pw}$a; sleep 2; echo ${pw}$a; sleep 2; ) | ssh root@training1.local passwd training
+	( echo ${rootpw}; sleep 2; echo ${rootpw}; sleep 2; ) | ssh root@training1.local passwd
+	ssh root@training1.local sed -i "s/training1/training$a/g" /etc/hosts /etc/motd  /etc/hostname
+	echo "Rebooting training$a"
+	ssh root@training1.local reboot
+done
+
+echo "Specialcasing the _real_ training1. Starting it."
+sleep 5
+virsh start training1
+sleep 25
+echo "Trying to set the password for training1."
+( echo ${pw}1; sleep 2; echo ${pw}1; sleep 2; ) | ssh root@training1.local passwd training
+( echo ${rootpw}; sleep 2; echo ${rootpw}; sleep 2; ) | ssh root@training1.local passwd
+
+echo "Summary:"
+for a in `seq 1 $AMOUNT`; do
+	sleep 2
+	echo "training$a.local is:"
+	ssh root@training$a.local ip addr | grep inet | egrep -v '(127.0.0.1|6 ::1|fe80::)'
+	echo
+done
