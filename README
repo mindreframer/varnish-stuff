@@ -1,0 +1,63 @@
+INSTALL:
+========
+
+The source tree is based on autotools to configure the building, and
+does also have the necessary bits in place to do functional unit tests
+using the varnishtest tool.
+
+Prerequisites:
+
+- Varnish source - version 3.0.3 or previous
+- libpcre3-dev
+- libtool
+
+Usage:
+
+./autogen.sh
+./configure VARNISHSRC=DIR [VMODDIR=DIR]
+
+VARNISHSRC is the directory of the Varnish source tree for which to
+compile your vmod. Both the VARNISHSRC and VARNISHSRC/include
+will be added to the include search paths for your module.
+
+Optionally you can also set the vmod install directory by adding
+VMODDIR=DIR (defaults to the pkg-config discovered directory from your
+Varnish installation).
+
+Make targets:
+
+make - builds the vmod
+make install - installs your vmod in VMODDIR
+
+if VMODDIR is not on the user space do 'sudo make install' instead
+
+On your VCL configuration: 
+
+import threescale;
+
+set req.http.X-tmp = threescale.send_get_request_threaded("su1.3scale.net","80",req.url,"");
+set req.http.X-tmp = threescale.send_get_request("su1.3scale.net","80",req.url,"X-url-header: true;");
+
+
+Integration modes:
+
+Use the appropriate VCL configuration file for the integration mode you would like to follow.
+
+vcl/default_3scale_simple.vcl - Varnish as a cache middleware between your API backend and the 3scale service.
+vcl/default_3scale_with_proxy.vcl - Varnish as an API proxy between API consumers and your API endpoints. In this setup, Varnish will be fully in charge of the integration with the 3scale service.
+
+Replace the default config file with one of the above:
+
+sudo mv /etc/varnish/default.vcl /etc/varnish/default.vcl.bkp
+sudo cp libmod-3scale/vcl/default_3scale_simple.vcl /etc/varnish/default.vcl
+sudo /etc/init.d/varnish restart
+
+
+It is always advisable to check the syslog for failures while testing
+
+tail -f /var/log/syslog | egrep 'varnish'
+
+
+
+
+

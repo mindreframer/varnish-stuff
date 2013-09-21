@@ -1,0 +1,32 @@
+varnishtest "Test vmod 3Scale"
+
+
+server s1 {
+       rxreq
+       txresp -body "Foo: bar"
+       accept
+       rxreq
+       txresp -body "Foo: bar"
+
+} -start
+
+varnish v1 -vcl+backend {
+	import threescale from "${vmod_topbuild}/src/.libs/libvmod_threescale.so";
+
+	sub vcl_deliver {
+		
+		set resp.http.code1 = threescale.send_get_request("${s1_addr}", "${s1_port}", "/authorize.html", "");
+	}
+} -start
+
+client c1 {
+	txreq -url "/"
+	rxresp
+	expect resp.http.code1 == "200"
+
+	
+}
+
+
+client c1 -run
+

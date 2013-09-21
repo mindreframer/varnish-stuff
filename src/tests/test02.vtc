@@ -1,0 +1,34 @@
+varnishtest "Test vmod 3Scale"
+
+server s1 {
+       rxreq
+       txresp
+} -start
+
+varnish v1 -vcl+backend {
+	import threescale from "${vmod_topbuild}/src/.libs/libvmod_threescale.so";
+
+	sub vcl_deliver {
+		
+
+
+		set resp.http.code2 = threescale.response_http_code("HTTP/1.1 200 OK");
+
+		set resp.http.secret = threescale.response_key("<?xml version='1.0' encoding='UTF-8'?><status><authorized>true</authorized><application><id>52b82d8e</id><key>2f9521fa498789587247d9b2b3e27759</key><redirect_url></redirect_url></application><plan>Production</plan></status>");
+
+
+		
+	}
+} -start
+
+client c1 {
+	txreq -url "/"
+	rxresp
+
+	expect resp.http.code2 == "200"
+	expect resp.http.secret == "2f9521fa498789587247d9b2b3e27759"
+
+}
+
+client c1 -run
+
