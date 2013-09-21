@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -e
+
+TMPDIR="$(mktemp -d)"
+SRCDIR="$(dirname $0)/"
+
+PATH=/usr/sbin:/sbin:$PATH
+
+ORIGPWD=$PWD
+
+export TMPDIR PATH SRCDIR ORIGPWD
+
+cd "$SRCDIR"
+./$1
+
+# cleanup handled by trap

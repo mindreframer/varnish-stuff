@@ -1,0 +1,23 @@
+#!/usr/bin/make -f
+export DH_VERBOSE=1
+# Set local state dir for FHS
+LOCAL_CONFIGURE_FLAGS = --localstatedir=/var/lib
+
+override_dh_auto_configure:
+	dh_auto_configure -- $(LOCAL_CONFIGURE_FLAGS)
+
+override_dh_install:
+	dh_install --fail-missing
+
+override_dh_auto_test:
+	$(MAKE) check || ( tail -n +1 tests/*.log ; false )
+
+override_dh_gencontrol:
+	if [ -n "$$DEBIAN_OVERRIDE_BINARY_VERSION" ]; then \
+		dh_gencontrol -- -v$$DEBIAN_OVERRIDE_BINARY_VERSION; \
+	else \
+		dh_gencontrol ; \
+	fi
+
+%:
+	dh $@

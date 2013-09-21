@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Varnish Agent</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="../html/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../html/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="../html/css/slider.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+
+    </style>
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+  <style type="text/css"></style></head>
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+	  <span class="icon-bar">
+		</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+	  <a href="http://varnish-software.com/" class="pull-left">
+	<svg version="1.2" baseProfile="tiny" id="Layer_1" style="margin-top: 2px; margin-right: 4px;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" height="32px" viewBox="0 0 512 512" xml:space="preserve" fill="white"><path d="M376.261,30.86c58.724,0,106.319,47.603,106.319,106.326c0,58.724-47.596,106.327-106.319,106.327S269.941,195.91,269.941,137.187C269.941,78.463,317.537,30.86,376.261,30.86z"/><path d="M207.796,329.471c42.405,0,76.782,34.377,76.782,76.782c0,42.404-34.377,76.796-76.782,76.796 s-76.782-34.392-76.782-76.796C131.015,363.848,165.392,329.471,207.796,329.471z"/><path d="M76.137,183.781c24.551,0,44.452,19.909,44.452,44.459s-19.901,44.452-44.452,44.452 s-44.459-19.901-44.459-44.452S51.586,183.781,76.137,183.781z"/></svg>
+		</a>
+          <a class="brand" href="http://varnish-software.com/">
+	  Varnish Agent</a>
+          <div class="nav-collapse collapse">
+	     <p class="navbar-text pull-right"><a
+	     href="http://github.com/varnish/vagent2/"
+	     id="agentVersion" class="navbar-link"></a></p>
+            <ul class="nav">
+	      <li class="active"id="nav-param"><a href="#params" onclick="showParam()">Home</a></li>
+	      <li id="nav-vcl"><a href="#VCL" onclick="showVCL()">VCL</a></li>
+              <li id="nav-home"><a href="#about" onclick="showHome()">About</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3">
+	  <button class="btn disabled btn-block btn-primary" id="vcl-btn"></button>
+	  <button class="btn disabled btn-block btn-primary" id="stats-btn"></button>
+	  <button class="btn disabled btn-block" id="status-btn"></button>
+	  <pre id="out"></pre>
+	  <p id="test-out"></p>
+        </div><!--/span-->
+	<div class="span9">
+	  <div class="span12" id="vcl" style="DISPLAY: none">
+	    <textarea id="vcl-text" class="input-block-level" rows=25></textarea>
+	    <br>
+            <div class="input-append">
+	      <input class="span3" type=text placeholder="VCL id" id="vclID"></input>
+	      <button id="upbut" class="btn btn-primary" data-loading-text="Saving..." onclick="uploadVCL()">Save VCL</button>
+	    </div>
+	    <div class="input-append">
+	      <select id="loader" class="span3"></select>
+	      <button id="viewbut" type="button" class="btn btn-primary" data-loading-text="Loading..." onclick="loadVCL()">View VCL</button>
+	      <button class="btn" onclick="deployVCL()">Use VCL</button>
+	      <button class="btn" onclick="discardVCL()"><i class="icon-trash"></i> Discard VCL</button>
+	    </div>
+          </div>
+	  <div id="params">
+	    <div class="row-fluid span12">
+	    <div class="span6">
+	      <h1>Parameters</h1>
+	      <p>These are run-time parameters of the Varnish Cache daemon.
+	      Most of them can be changed on the fly, but some might not
+	      take effect for some time (e.g: Changing default_ttl will
+	      only apply to new content). Others might require a child
+	      restart.</p>
+	      <p>Best practices is to keep your parameters as close to the
+	      defaults as possible.</p>
+	      <select onchange="paramChange()" id="param-sel"></select>
+	      <div class="input-append">
+	        <input type="text" id="param-val" placeholder="Parameter value"/>
+	        <button type=submit class="btn btn-primary" onclick="saveParam()">Save</button>
+	        <button class="btn" onclick="setParamDef()">Default</button>
+	      </div><!--input append -->
+	      <a href="#" onclick="paramListDiff()">View non-default parameters</a>
+	    </div><!-- span -->
+	    <div class="span6">
+	      <h1>Running</h1>
+	      <p>You can stop and start the Varnish child. This clears out
+	      all statistics and the cache itself.</p>
+	      <p>While stopped, Varnish does not listen for HTTP
+	      connections, but does accept administrative commands (e.g:
+	      setting parameters, VCL, and starting it back up again).</p>
+	      <p>For information about panics, see <a
+	      href="/help/panic">/help/panic</a>. The links below just use
+	      this API.</p>
+	      <div class="btn-group">
+                <button class="btn btn-primary" onclick="start()">Start Varnish</button>
+	        <button class="btn" onclick="stop()">Stop Varnish</button>
+		<button class="btn" onclick="panicShow()">Show panics</button>
+		<button class="btn" onclick="panicClear()">Clear panics</button>
+		<button class="btn btn-danger" onclick="panicTest()">Induce Panic</button>
+              </div>
+	    </div>
+	    </div>
+	    <div class="row-fluid">
+	    <div class="span6">
+	      <h1>Cache invalidation</h1>
+	      <p>The agent only supports banning. For other methods, use
+	      VCL.</p>
+	      <p>The agent issues ban commands over the Varnish CLI. It
+	      will not free up memory unless you use smart bans.</p>
+	      <p>Keep in mind that if your cache is empty, your ban list
+	      will also always be empty. In other words: If you are just
+	      testing this and banning something, then get an empty ban
+	      list instead of seeing your own ban: make sure the cache has
+	      content.</p>
+	      <div class="input-append">
+	        <input id="smartBan" type="text" placeholder="URL to ban. E.g: /foobar.html" />
+	        <button class="btn btn-primary" onclick="banSmart()">Ban</button>
+	      </div>
+	      <p><a href="#" onclick="banList()">List bans</a></p>
+	    </div>
+            <div class="span6">
+	      <h1>Varnishtop</h1>
+	      <p>This is a JavaScript implementation of varnishtop. It can
+	      help you determine what traffic you should look closer at
+	      (e.g: cache misses), what web servers you are using (e.g:
+	      Server headers), etc.</p>
+	      <select id="varnishtop-sel" onChange="updateTop()">
+    	        <option value="TxURL">Cache misses</option>
+	        <option value="RxURL">Requested URLs</option>
+	        <option value="TxStatus">Response codes sent</option>
+	        <option value="RxHeader/^Vary:">Vary headers received</option>
+	        <option value="TxHeader/^Vary:">Vary headers sent</option>
+	        <option value="RxHeader/^Server:">Server headers received</option>
+	        <option value="RxHeader/^Host:">Host headers received</option>
+	        <option value="TxHeader/^Content-Type:">Content type</option>
+	      </select>
+	      <div class="input-append">
+	      <input size="4" cols="4" min="1" max="1000" maxlength="4" type="number" value="5" id="varnishtoplength" onchange="varnishtopChange()">
+	      <input type="submit" class="btn btn-primary"
+	      onclick="varnishtopUpdate()" value="Update list length"/>
+	      </div>
+	      <pre id="varnishtop"></pre>
+	      </div>
+	    </div><!-- span -->
+	    <div class="row-fluid">
+	      <div class="span12">
+	        <div id="usercontent"></div>
+	      </div>
+	    </div>
+	  </div><!-- params -->
+	  <div class="span9" id="home" style="DISPLAY: none">
+            <div class="hero-unit">
+	      <h1>Welcome to the Varnish Agent</h1>
+	      <p>This is the Varnish Agent's HTML interface. It is designed
+	      to showcase the various features of the Varnish Agent.</p>
+	      <p>Features of the varnish agent:</p>
+	      <ul>
+	      <li>VCL uploading, downloading, persisting (storing to
+	      disk).</li>
+	      <li>Parameter viewing, storing. Not persisting yet.</li>
+	      <li>Varnishstat in json format</li>
+	      <li>Varnishlog (somewhat flawed at the moment, but usable).
+	      Frontend can use this data to simulate varnishlog, varnishtop,
+	      varnishhist and more.</li>
+	      <li>Panic show/clear, start/stop/status.</li>
+	      <li>Banning.</li>
+	      <li>Static file distribution (e.g: /html/)</li>
+	      <li>Proof of Concept front end (what you're looking at).</li>
+	      </ul>
+	      <p>You can think of the Varnish Agent as a web frontend and
+	      REST interface to your <a href="http://varnish-cache.org">Varnish
+	      Cache</a>. 
+	      <p>The agent strives to be "self documenting", meaning that the
+	      REST API should be easily understood by browsing the <a
+	      href="/">root directory</a>.The content you are currently
+	      viewing is the asset-serving portion of the agent, found under
+	      <a href="../html/">/html/</a>.
+	      <p>The agent is under development, and is written for the
+	      <a href="http://www.varnish-software.com">Varnish
+	    Administration Console</a>.</p>
+	      <p>File bugs to the <a
+	      href="http://github.com/varnish/vagent2/">github
+	      repository</a>.</p>
+  	    </div>
+	  </div>
+	</div>
+      </div><!--/row-->
+    </div><!--/.fluid-container-->
+  </div>
+    <script src="../html/js/jquery-1.10.2.min.js"></script>
+    <script src="../html/js/bootstrap.min.js"></script>
+    <script src="../html/js/agent.js"></script>
+  </body>
+</html>
