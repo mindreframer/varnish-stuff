@@ -1,0 +1,19 @@
+Module ldap
+Init init_function
+
+
+Function STRING get_basicuser()
+Function STRING get_basicpass()
+
+Function BOOL simple_auth(BOOL,STRING,STRING,STRING,STRING,STRING)
+
+Function BOOL open(BOOL,STRING,STRING,STRING,STRING,STRING)
+Function VOID close()
+
+Function STRING get_dn()
+Function BOOL bind()
+Function BOOL require_user(STRING)
+Function BOOL compare(STRING,STRING)
+Function BOOL compare_dn(STRING,STRING)
+Function BOOL compare_attribute(STRING,STRING)
+
