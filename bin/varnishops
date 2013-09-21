@@ -1,0 +1,66 @@
+#!/usr/bin/env ruby
+
+$:.unshift File.join(File.dirname(__FILE__),'..','lib')
+
+require 'cmdline'
+require 'varnish_pipe'
+require 'ui'
+
+@config = CmdLine.parse(ARGV)
+
+@regexs = {}
+# load regex config file
+begin
+  load @config[:config_file]
+rescue Exception => e
+  puts "Unable to load config.rb (#{e.message})"
+  exit 1
+end
+
+pipe = VarnishPipe.new(@config, @regexs)
+ui = UI.new(@config)
+
+done = false
+
+# trap most of the typical signals
+%w[ INT QUIT HUP KILL ].each do |sig|
+  Signal.trap(sig) do
+    puts "** Caught signal #{sig} - exiting"
+    done = true
+  end
+end
+
+# kick the pipe thread off
+pipe_thr = Thread.new { pipe.start }
+
+# main loop
+until done do
+  ui.header
+  ui.footer
+  ui.render_stats(pipe)
+  refresh
+
+  key = ui.input_handler
+  case key
+    when /[Qq]/
+      done = true
+    when /[Kk]/
+      ui.sort_mode = :key
+    when /[Cc]/
+      ui.sort_mode = :calls
+    when /[Rr]/
+      ui.sort_mode = :reqps
+    when /[Bb]/
+      ui.sort_mode = :bps
+    when /[Hh]/
+      ui.sort_mode = :hitratio
+    when /[Pp]/
+      ui.show_percent = !ui.show_percent
+    when /[Tt]/
+      ui.sort_order =  ui.sort_order == :desc ? :asc : :desc
+  end
+end
+
+# stop threads
+ui.stop
+pipe.stop
