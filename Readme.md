@@ -8,6 +8,7 @@
   - [Realtime stats from Varnish, 2013.02](http://jiboumans.wordpress.com/2013/02/27/realtime-stats-from-varnish/)
   - [Context-aware HTTP caching, 2012.09](http://asm89.github.io/2012/09/26/context-aware-http-caching.html)
   - [Simple scales faster and better in the real world - Video](http://vimeo.com/album/2525252/video/74388108)
+  - [Setup Varnish as an API Proxy](https://support.3scale.net/howtos/api-configuration/varnish)
 
 
 ## Slides
