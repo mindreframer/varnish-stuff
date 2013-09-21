@@ -7,7 +7,7 @@
   - [Ultra-Performant Dynamic Websites with Varnish - Lidl.de, 2012.01](http://blog.mgm-tp.com/2012/01/varnish-web-cache/)
   - [Realtime stats from Varnish, 2013.02](http://jiboumans.wordpress.com/2013/02/27/realtime-stats-from-varnish/)
   - [Context-aware HTTP caching, 2012.09](http://asm89.github.io/2012/09/26/context-aware-http-caching.html)
-  - [Simple scales faster and better in the real world](http://vimeo.com/album/2525252/video/74388108)
+  - [Simple scales faster and better in the real world - Video](http://vimeo.com/album/2525252/video/74388108)
 
 
 ## Slides
@@ -18,6 +18,7 @@
   - [Varnish @ VGnet](http://www.vg.no/presentations/slides/VUG2012.html)
   - [Varnish @ Holiday-extras.com](https://www.varnish-cache.org/sites/default/files/10_Varnish_Presentation_Holidays-Extras.pdf)
   - [Varnish @ Opera](http://www.slideshare.net/cstrep/vug5-varnish-at-opera-software/)
+  - [Lost in Translation:varnishlog, varnishtest(VUG7), 2013.05](http://www.slideshare.net/xcir/varnish-user-group-meeting-7final-ver)
 
 
 ## Examples for VCL
@@ -58,6 +59,9 @@
   - https://www.varnish-cache.org/vug6/
   - https://www.varnish-cache.org/vug5/
   - https://www.varnish-cache.org/vug4/
+
+## Books
+  - [Varnish System Administration](https://www.varnish-software.com/static/pdfs/varnish-book-4.2-dirty.pdf)
 
 ## Fastly
   - https://github.com/fastly
