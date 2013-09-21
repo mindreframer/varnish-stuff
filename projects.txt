@@ -25,6 +25,7 @@ https://github.com/mattiasgeniar/varnish-3.0-configuration-templates.git
 https://github.com/metabrainz/3scale-vcl.git
 https://github.com/mmb/vmod_dgram.git
 https://github.com/nand2/libvmod-throttle.git
+https://github.com/observing/balancerbattle.git
 https://github.com/pad92/varnish.git
 https://github.com/pbruna/Varnish-Agent-Dashboard.git
 https://github.com/robmiller/varnisher.git
@@ -44,4 +45,3 @@ https://github.com/xcir/libvmod-backendutils.git
 https://github.com/xcir/libvmod-ldap.git
 https://github.com/xcir/libvmod-parsereq.git
 https://github.com/xcir/vsltrans.git
-https://github.com/observing/balancerbattle.git
