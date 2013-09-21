@@ -41,7 +41,6 @@ end
 
 def handle_project(git_url)
   if File.exist?(name(git_url))
-    add_remote(git_url)
     update_project(git_url)
   else
     add_remote(git_url)
