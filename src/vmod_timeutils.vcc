@@ -1,0 +1,5 @@
+Module timeutils
+Init init_function
+Function STRING version()
+Function STRING rfc_format(DURATION)
+Function STRING expires_from_cache_control(DURATION)

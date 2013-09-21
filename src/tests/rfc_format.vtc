@@ -1,0 +1,26 @@
+varnishtest "timeutils-vmod: Test rfc_format"
+
+server s1 {
+	rxreq
+	expect req.url == "/test"
+	txresp -status 200
+} -start
+
+varnish v1 -vcl+backend {
+	import timeutils from "${vmod_topbuild}/src/.libs/libvmod_timeutils.so";
+
+	sub vcl_deliver {
+		if (req.url == "/test") {
+			set resp.http.X-RFC-Format = timeutils.rfc_format(10m);
+			set resp.http.X-Now-Plus-RFC-Format = timeutils.rfc_format(now + 10m);
+		}
+	}
+} -start
+
+client c1 {
+	txreq -url "/test"
+	rxresp
+	expect resp.status == 200
+	expect resp.http.X-RFC-Format == "Thu, 01 Jan 1970 00:10:00 GMT"
+	# TODO: we need a way to test resp.http.X-Now-Plus-RFC-Format
+} -run
