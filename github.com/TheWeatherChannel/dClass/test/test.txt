@@ -1,0 +1,66 @@
+abc123
+xy1234
+xyc123
+aaxyzbbb
+3 2 1 three two one 3 2 1
+0ne test two0 test 3 test
+1 2 one_tw0 three four
+rat vat bat sat mat cat nat
+rat vat bat sat mat nat
+rat vat sat mat nat
+rat vat sat nat
+rat vat nat
+rat nat
+nat
+test3 test4
+test4 test3
+test2 test1
+test1 test2
+test5 test6
+test6 test5
+test7 test9 test8
+test7 test8 test9
+settest
+set.test
+set1test
+set..test
+set\test
+set\\test
+group0 group1 group2 group3 group4
+group0 group1) group t3st? group3 group4
+group0 group1) group tstx group3 group4
+group0 group1) group tstxx group3 group4
+pattern 123  456
+pattern 123  456 
+pattern 123  "  456 
+a ptest b c d e f
+ptest b c d e f
+a b ptest c d e f
+a b c ptest d e f
+a b c d e f g ptest
+a b c d e f g h i j k ptest
+a b fullstring c
+a fullstring
+fullstring
+a full string
+full string
+full 55 b string
+full string b
+some wtest25 text wtest5b wtest wtest100
+some wtest25 text wtest5b wtest wtest10x0
+some wtest5 text wtest5b wtest wtest10x0
+some wtest5 text wtestb wtest wtest10x0
+some wtestx text wtestb wtest wtest10x0
+3 this is the end x
+4 this is the start x
+5 this is the start end
+5 this is the middle end
+aaa bbb ccc
+aaa bb ccc bbb
+aaa bbb ccc bbb
+aaa bbb 5 4 3 2 ccc
+aaa bbb 5 4 3 2 ccc bbb
+aaa bbb 5 4 3 2 ccc 7 6 bbb
+aaa bb 5 4 3 2 ccc 7 6 bbb
+del,del=del
+quote";"quote

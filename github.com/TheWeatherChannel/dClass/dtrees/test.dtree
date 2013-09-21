@@ -1,0 +1,82 @@
+# Test dtree
+
+#$regex
+#$dups
+
+#!unknown,bat,mat,vat,wtest5b
+
+abc123;abc;S;;key1="value,1",key 2=value 2
+xy[zc]?1234?;xyz;S;;
+.?..xyz...?;xyz;S;;1=123,2=234
+
+1;1;B;;
+2;2;B;1;
+3;123;C;2;
+[0o]ne;1;B;;
+tw[0o][0o]?;2;B;1;
+three;123;C;2;onetwothree=C
+one.two.three;123w;W;;onetwothree=W
+one.tw0.three;123s;S;;onetwothree=S
+
+cat;cat;S;;
+mat;mat;W;;
+sat;sat;W;;
+bat;bat;W;;
+vat;vat;N;;
+rat;rat;N;;
+
+test3 test4;test34;S;;
+test3;test3;S;;
+test1 test2;test12;W;;
+test1;test1;W;;
+test2;test2;W;;
+test5 test6;test56;N;;
+test5;test5;N;;
+test8 test9;test89;C;test7;
+test8;test8;C;test7;
+test7;test7;B;;
+
+(set\.\.?test);settest;S;;period=true
+(set.?test);settest2;S;;period=false
+set\\test;settest3;S;;slash=true
+
+(group1\)?) (group(2)?) (t[e3]?st\? )?(group3);g123;;
+
+   "pattern 123  \"  456 "   ;  p123456s  ; S ;;  var1  = "value1,fake=part of var1", " value 2 "  = two
+   "pattern 123  456 "   ;  p123456n  ; S ;;  var1  = val1  ,   var2=two
+
+^ptest;ptest1;S;;pos=1
+ptest;ptest2;S:2;;pos=2
+ptest;ptest3;S:3;;pos=3
+ptest$;pteste;S;;pos=end
+
+^fullstring$;fulls;S;;pos=full,space=false
+fullstring;fullsa;W;;pos=any,space=false
+
+^full;sfullb;B;;
+string$;sfulls;C;sfullb:-1;pos=full,space=true
+string$;sfulls1;C;sfullb:-2;pos=full,space=2
+string$;sfulls2;C;sfullb:-3;pos=full,space=3
+
+wtest       ;wtest;     W;      ;weak=blank
+wtest1      ;wtest1;    W1;     ;weak=1
+wtest5b     ;wtest5b;   W5;     ;weak=5,beta=true
+wtest5      ;wtest5;    W5;     ;weak=5
+wtest25     ;wtest25;   W25;    ;weak=25
+wtest100    ;wtest100;  W100;   ;weak=100
+
+this is the  ;thisis ;B  ;          ;
+start        ;thiss  ;C10;thisis:-3 ;this is=start
+end$         ;thise  ;C11;thisis:-4 ;this is=end,end=""
+middle       ;middle ;W12;          ;middle=weak11
+
+aaa;aaa;B;;
+bbb;bbbb;C120;ccc:1;b=before c
+bbb;bbbbm;C50;ccc:10;b=before c,multi=true
+bbb;bbba;C130;ccc:-1;b=after c
+bbb;bbbam;C30;ccc:-10;b=after c,multi=true
+ccc;ccc;B;;
+
+del,del=del;delt;S;;var=value1;value2,v2=two
+
+"quote\";\"quote";quote;S;;test="\"value1\",\"value2\"",second="\""

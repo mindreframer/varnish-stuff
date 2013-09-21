@@ -1,0 +1,38 @@
+Tested with nginx 1.0.2, 1.0.15, and 1.2.8
+
+Add the following param to your configure:
+ --add-module=/some/path/dClass/servers/src
+
+Enable or disable the lookup:
+    dclass on;
+    dclass off;
+
+Define one or more indexes (upto 4):
+    dclass_def /some/path/dClass/dtrees/openddr.dtree;
+    dclass_def1 /some/path/dClass/dtrees/browser.dtree;
+
+Define the header field (default: User-Agent):
+    dclass_hfield "Custom-Field2";
+
+The following variables are supported:
+    $dclass_id
+  OpenDDR:
+    $dclass_vendor
+    $dclass_model
+    $dclass_parentId
+    $dclass_inputDevices
+    $dclass_displayHeight
+    $dclass_displayWidth
+    $dclass_device_os
+    $dclass_ajax_support_javascript
+    $dclass_is_tablet
+    $dclass_is_wireless_device
+    $dclass_is_desktop
+    $dclass_is_crawler
+  Browser
+    $dclass_browser
+    $dclass_version
+    $dclass_os
+
+The following variable allows the lookup to be cached between variable uses:
+    $dclass_ptr
