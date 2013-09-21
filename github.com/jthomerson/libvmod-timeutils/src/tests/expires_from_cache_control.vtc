@@ -1,0 +1,47 @@
+varnishtest "timeutils-vmod: Test rfc_format"
+
+server s1 {
+	# no Cache-Control header in the response at all
+	rxreq
+	expect req.url == "/test1"
+	txresp -status 200 -hdr "Expires: Sat, 23 Nov 1991 16:30:00 GMT"
+
+	# Cache-Control header in the response, no max-age in it
+	rxreq
+	expect req.url == "/test2"
+	txresp -status 200 -hdr "Expires: Sat, 23 Nov 1991 16:30:00 GMT" -hdr "Cache-Control: s-maxage=3600, must-revalidate"
+
+	# Cache-Control header in the response, with max-age of 30m
+	rxreq
+	expect req.url == "/test3"
+	txresp -status 200 -hdr "Expires: Sat, 23 Nov 1991 16:30:00 GMT" -hdr "Cache-Control: s-maxage=3600, max-age=1800, must-revalidate"
+} -start
+
+varnish v1 -vcl+backend {
+	import timeutils from "${vmod_topbuild}/src/.libs/libvmod_timeutils.so";
+
+	sub vcl_deliver {
+		set resp.http.X-Expires = timeutils.expires_from_cache_control(20m);
+	}
+} -start
+
+client c1 {
+	txreq -url "/test1"
+	rxresp
+	expect resp.status == 200
+	expect resp.http.Expires != "Expires: Sat, 23 Nov 1991 16:30:00 GMT"
+	# TODO: we need a way to verify that Expires is equal to "now + 20m" (default since no Cache-Control supplied)
+
+	txreq -url "/test2"
+	rxresp
+	expect resp.status == 200
+	expect resp.http.Expires != "Expires: Sat, 23 Nov 1991 16:30:00 GMT"
+	# TODO: we need a way to verify that Expires is equal to "now + 30m" (value from max-age)
+
+	txreq -url "/test3"
+	rxresp
+	expect resp.status == 200
+	expect resp.http.Expires != "Expires: Sat, 23 Nov 1991 16:30:00 GMT"
+	# TODO: we need a way to verify that Expires is equal to "now + 20m" (default since no max-age supplied)
+
+} -run
