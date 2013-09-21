@@ -1,0 +1,193 @@
+#! /usr/bin/ruby
+
+#
+# Copyright 2012 Varnish Software AS
+#
+# Written by Tollef Fog Heen <tfheen@varnish-software.com>
+#
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+#
+# 1. Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+#
+# 2. Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in
+#    the documentation and/or other materials provided with the
+#    distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS''
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+# TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+# PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL AUTHOR OR
+# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+# LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+# USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+# OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+# SUCH DAMAGE.
+
+require 'rubygems'
+require "bundler/setup"
+require 'rexml/document'
+require "newrelic_plugin"
+
+module VarnishAgent
+  def VarnishAgent.groups()
+    return {
+      'Request rates' => {
+        'metrics' => %w(cache_hit cache_hitpass cache_miss backend_conn backend_unhealthy client_req client_conn)
+      },
+      'Hit rates' => {
+        'metrics' => %w(client_req cache_hit cache_miss cache_hitpass)
+      },
+      'Backend Traffic' => {
+        'metrics' => %w(backend_conn backend_unhealthy backend_busy backend_fail backend_reuse backend_recycle backend_unused backend_req)
+      },
+      'Number of objects' => {
+        'metrics' => %w(n_object n_objcore n_objhead)
+      },
+      'Transfer rates' => {
+        'metrics' => %w(s_bodybytes s_hdrbytes)
+      },
+      'Thread status' => {
+        'metrics' => %w(n_wrk n_wrk_create n_wrk_failed n_wrk_max n_wrk_overflow n_wrk_drop)
+      },
+      'Memory usage' => {
+        'metrics' => %w(sm_balloc sma_nbytes sms_nbytes),
+        'regex_metrics' => [ /^(SM[AF]\.[^.]+)\.g_(bytes|space)/ ]
+      },
+      'Misbehaviour' => {
+        'metrics' => %w(client_drop backend_unhealthy fetch_failed backend_busy n_wrk_failed n_wrk_max n_wrk_drop n_wrk_lqueue losthdr n_objoverflow esi_errors esi_warnings client_drop_late accept_fail),
+        'regex_metrics' => [/^(SM[AF]\.[^.]+)\.c_fail/ ]
+      },
+    }
+  end
+
+  def VarnishAgent.varnishstat(vname = nil)
+    cmd = [ "varnishstat", "-1", "-x" ]
+    if not vname.nil?
+      cmd.push("-n", vname.to_s)
+    end
+    r = ""
+    IO::popen(cmd.join(' '), mode="r") do |io|
+      r += io.read()
+    end
+    doc = REXML::Document.new(r)
+    r = {}
+    doc.elements.each('varnishstat/stat') do |i|
+        name, others = i.elements.partition{|e| e.name == 'name'}
+        r[name.first.text] = Hash[others.map{|e| [e.name, e.text]}]
+    end
+    return r
+  end
+
+  class Agent < NewRelic::Plugin::Agent::Base
+    agent_guid "com.varnish-software.newrelic-stat"
+    agent_version '0.0.4'
+    agent_human_labels("Varnish") { "#{@name||"varnish"}[#{@vname||"default"}]"}
+    agent_config_options :vname
+
+#    metric_human_label { "Varnish[#{agent.instance_label}]: #{config[:description]}" }
+
+    def unit(name)
+      case name.to_s
+        when /^client_(conn|drop)/
+        "connections"
+        when /^client_(req|hit|miss)/
+        "requests"
+        when /^cache_(hit|miss)/
+        "requests"
+        when /^backend_/
+        "connections"
+        when /^fetch_/
+        "fetch"
+        when /^n_(obj|expired|lru)/
+        "objects"
+        when /^n_wrk/
+        "threads"
+        when /^n_backend/
+        "backends"
+        when /^n_/
+        "structs"
+        when /^s_sess/
+        "sessions"
+        when /^s_(req|pipe|pass|fetch)/
+        "requests"
+        when /bytes$/
+        "bytes"
+        when /g_space$/
+        "bytes"
+        when /^sess/
+        "sessions"
+        when /^losthdr/
+        "requests"
+        when /^esi_errors/
+        "errors"
+        when /^esi_warnings/
+        "warnings"
+        when /^accept_fail/
+        "accepts"
+        when /c_fail$/
+        "allocations"
+        else
+        raise "Unknown unit: #{name}"
+        end
+    end
+
+    def poll_cycle
+      stats = VarnishAgent.varnishstat(@vname)
+      VarnishAgent.groups.each do |gname, group|
+        group["metrics"].each do |metric|
+          stat = stats[metric]
+          if stat.nil?
+            next
+          end
+          report(metric, "#{gname}/#{stat["description"]}", stat)
+        end
+
+        if group.include?("regex_metrics")
+          group["regex_metrics"].each do |regex|
+            stats.each do |sname, stat|
+              if regex.match(sname)
+                report(sname, "#{gname}/#{$1} #{stat["description"]}", stat)
+              end
+            end
+          end
+        end
+      end
+    rescue => e
+      $stderr.puts "#{e}: #{e.backtrace.join("\n  ")}"
+    end
+
+    def report(name, description, stat)
+      if stat["flag"] == "a"
+        report_counter_metric description, unit(name) + "/sec", stat["value"].to_i
+      else
+        report_metric description, unit(name), stat["value"].to_i
+      end
+    end
+
+    def report_counter_metric(metric, type, value)
+      @processors ||= {}
+
+      if @processors[metric].nil?
+        @processors[metric] = NewRelic::Processor::EpochCounter.new
+      end
+
+      report_metric metric, type, @processors[metric].process(value)
+    end
+  end
+
+  NewRelic::Plugin::Setup.install_agent :varnish,VarnishAgent
+
+  #
+  # Launch the agent (never returns)
+  #
+  NewRelic::Plugin::Run.setup_and_run
+end
