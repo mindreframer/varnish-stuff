@@ -1,0 +1,12 @@
+Module timers
+Init init_function
+Function INT add(INT,INT)
+Function INT subtract(INT,INT)
+Function VOID unit(PRIV_VCL,STRING)
+Function REAL req_start(PRIV_VCL)
+Function TIME req_start_as_string(PRIV_VCL)
+Function REAL req_end(PRIV_VCL)
+Function TIME req_end_as_string(PRIV_VCL)
+Function INT req_handle_time(PRIV_VCL)
+Function INT req_response_time(PRIV_VCL)
+Function INT req_delivery_time(PRIV_VCL)

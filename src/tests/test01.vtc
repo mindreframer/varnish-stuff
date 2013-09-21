@@ -1,0 +1,113 @@
+varnishtest "Test timers vmod"
+
+server s1 {
+       rxreq
+       txresp
+} -start
+
+
+# Function INT add(INT,INT)
+# Function INT subtract(INT,INT)
+# Function VOID unit(PRIV_VCL,STRING)
+# Function REAL req_start(PRIV_VCL)
+# Function TIME req_start_as_string(PRIV_VCL)
+# Function REAL req_end(PRIV_VCL)
+# Function TIME req_end_as_string(PRIV_VCL)
+# Function INT req_handle_time(PRIV_VCL)
+# Function INT req_response_time(PRIV_VCL)
+# Function INT req_delivery_time(PRIV_VCL)
+
+#    12 VCL_Log      c d req_start 1345837683.704
+#    12 VCL_Log      c d req_start_as_string Fri, 24 Aug 2012 19:48:03 GMT
+#    12 VCL_Log      c d req_end 1345837683.704
+#    12 VCL_Log      c d req_end_as_string Fri, 24 Aug 2012 19:48:03 GMT
+#    12 VCL_Log      c d req_handle_time 108718
+#    12 VCL_Log      c d req_response_time 1434326
+#    12 VCL_Log      c d req_delivery_time -1
+
+varnish v1 -vcl+backend {
+    import timers from "${vmod_topbuild}/src/.libs/libvmod_timers.so";
+
+    sub vcl_init {
+        ### so there's something to see, since there's no actual backend
+        timers.unit( "nanoseconds" );
+    }
+
+    ### XXX there isn't regex support to check the answers, so resort to
+    ### setting flags in vcl deliver :(
+    sub vcl_deliver {
+
+        ######################
+        ### utility functions
+        ######################
+
+        set resp.http.add       = timers.add( 1, 1 );
+        set resp.http.subtract  = timers.subtract( 4, 2 );
+
+        ######################
+        ### Timestamps
+        ######################
+
+        if( timers.req_start() > 0 ) {
+            set resp.http.req_start = 1;
+        }
+
+        ### XXX needs a temporary variable
+        set resp.http.x-req-start = timers.req_start_as_string();
+        if( resp.http.x-req-start ~ "GMT" ) {
+            set resp.http.req_start_as_string = 1;
+        }
+
+        if( timers.req_end() > 0 ) {
+            set resp.http.req_end = 1;
+        }
+
+        ### XXX needs a temporary variable
+        set resp.http.x-req-end = timers.req_end_as_string();
+        if( resp.http.x-req-end ~ "GMT" ) {
+            set resp.http.req_end_as_string = 1;
+        }
+
+        ######################
+        ### Durations
+        ######################
+
+        if( timers.req_handle_time() > 0 ) {
+            set resp.http.req_handle_time = 1;
+        }
+
+        if( timers.req_response_time() > 0 ) {
+            set resp.http.req_response_time = 1;
+        }
+
+        ### XXX vcl_deliver is called before the request is finished (obviously)
+        ### so delivery time will be -1. Until there's a later stage vcl that gets
+        ### called after delivery is completed, we can't expect a valid value here.
+        if( timers.req_delivery_time() < 0 ) {
+            set resp.http.req_delivery_time = 1;
+        }
+    }
+
+} -start
+
+client c1 {
+    txreq -url "/"
+    rxresp
+
+    ### utility functions
+    expect resp.http.add        == 2
+    expect resp.http.subtract   == 2
+
+    ### timestamps
+    expect resp.http.req_start              == 1
+    expect resp.http.req_start_as_string    == 1
+    expect resp.http.req_end                == 1
+    expect resp.http.req_end_as_string      == 1
+
+    ### durations
+    expect resp.http.req_handle_time        == 1
+    expect resp.http.req_response_time      == 1
+    expect resp.http.req_delivery_time      == 1
+}
+
+client c1 -run
