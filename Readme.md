@@ -48,6 +48,7 @@
   - [Dynamic backend](https://github.com/xcir/libvmod-backendutils.git)
   - [parsing post,get,cookie data](https://github.com/xcir/libvmod-parsereq.git)
   - [dClass - Pattern Classification Engine](https://github.com/TheWeatherChannel/dClass.git)
+  - [API Proxy](https://github.com/3scale/libvmod-3scale.git), [Official](https://www.varnish-cache.org/vmod/api-proxy)
 
 ## Misc
   - [Test framework written in Ruby to test varnish-cache routing and caching logic](https://github.com/TV4/Urushiol.git)
