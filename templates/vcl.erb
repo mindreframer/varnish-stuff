@@ -1,0 +1,130 @@
+<% require 'uri' -%>
+
+<% @backends.keys.sort.each do |name| -%>
+
+<% if @backends[name].kind_of?(Array) -%>
+
+director <%= name %> round-robin {
+<% @backends[name].sort.each do |member| -%>
+  <% uri = URI(member) -%>
+  {
+     .backend = {
+       .host = "<%= uri.host %>";
+<% if @vhosts.keys.include?(name) -%>
+       .host_header = "<%= @vhosts[name] %>";
+<% end -%>
+       .port = "<%= uri.port %>";
+       .probe = {
+         .url = "<%= uri.path %>";
+         .timeout = 30s;
+         .interval = 10s;
+         .threshold = 3;
+       }
+     }
+  }
+<% end -%>
+}
+
+<% else -%>
+
+backend <%= name %> {
+    <% uri = URI(@backends[name]) -%>
+    .host = "<%= uri.host %>";
+<% if @vhosts.keys.include?(name) -%>
+    .host_header = "<%= @vhosts[name] %>";
+<% end -%>
+    .port = "<%= uri.port %>";
+    .probe = {
+        .url = "<%= uri.path %>";
+        .timeout = 30s;
+        .interval = 10s;
+        .threshold = 3;
+    } 
+}
+
+<% end -%>
+
+<% end -%>
+
+backend status {
+   .host = "localhost";
+   .port = "8080";
+   .connect_timeout = 10s;
+   .first_byte_timeout = 10s;
+   .between_bytes_timeout = 10s;
+}
+
+sub normalize_req_url {
+
+    # Strip out Google Analytics campaign variables. They are only needed
+    # by the javascript running on the page
+    # utm_source, utm_medium, utm_campaign, gclid, ...
+    if(req.url ~ "(\?|&)(gclid|cx|ie|cof|siteurl|zanpid|origin|utm_[a-z]+|mr:[A-z]+)=") {
+        set req.url = regsuball(req.url, "(gclid|cx|ie|cof|siteurl|zanpid|origin|utm_[a-z]+|mr:[A-z]+)=[%.-_A-z0-9]+&?", "");
+    }
+    set req.url = regsub(req.url, "(\?&?)$", "");
+}
+
+acl purge {
+        "localhost";
+}
+
+sub vcl_recv_purge {
+        if (req.request == "PURGE") {
+                if (!client.ip ~ purge) {
+                        error 405 "Not allowed.";
+                }
+                return (lookup);
+        }
+}
+
+sub vcl_hit_purge {
+        if (req.request == "PURGE") {
+                purge;
+                error 200 "Purged.";
+        }
+}
+
+sub vcl_hit {
+  call vcl_hit_purge;
+}
+
+sub vcl_miss_purge {
+        if (req.request == "PURGE") {
+                purge;
+                error 200 "Purged.";
+        }
+}
+
+sub vcl_miss {
+  call vcl_miss_purge;
+}
+
+sub vcl_recv {
+  call vcl_recv_purge;
+
+  unset req.http.cookie;
+  set req.grace = 1h;
+
+  if (req.http.host == "localhost") {
+    set req.backend = status;
+  }
+  
+<% @backends.keys.sort.each do |name| -%>
+  if (req.http.host == "<%= name %>.<%= @domain %>"<% if @vhosts.keys.include?(name) -%> || req.http.host == "<%= @vhosts[name] %>"<% end -%>) {
+    set req.http.host = "<%= @vhosts[name] %>";
+    set req.backend = <%= name %>;
+  }
+<% end -%>
+
+  call normalize_req_url;
+
+}
+
+sub vcl_fetch {
+  set beresp.grace = 1h;
+  set beresp.do_stream = true;
+  if (beresp.http.content-type ~ "text" || beresp.http.content-type ~ "xml" || beresp.http.content-type ~ "javascript") {
+     set beresp.do_gzip = true;
+  }
+}
