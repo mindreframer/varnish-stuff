@@ -1,0 +1,3 @@
+Module dgram
+Init init_function
+Function VOID send(PRIV_VCL, STRING, STRING, INT)
