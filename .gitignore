@@ -1,0 +1,5 @@
+varnishtraining.box
+.DS_STORE
+.vagrant
+.vagrant*
+.idea
