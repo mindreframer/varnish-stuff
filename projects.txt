@@ -29,3 +29,4 @@ https://github.com/varnish/varnishgather.git
 https://github.com/vimeo/libvmod-boltsort.git
 https://github.com/xcir/libvmod-ldap.git
 https://github.com/hellvinz/purger.git
+https://github.com/metabrainz/3scale-vcl.git
