@@ -1,3 +1,4 @@
+https://github.com/3scale/libvmod-3scale.git
 https://github.com/allancrooks/vcl-cache-validation.git
 https://github.com/andreacampi/varnish-rb.git
 https://github.com/atdt/xvo.git
@@ -43,4 +44,3 @@ https://github.com/xcir/libvmod-backendutils.git
 https://github.com/xcir/libvmod-ldap.git
 https://github.com/xcir/libvmod-parsereq.git
 https://github.com/xcir/vsltrans.git
-https://github.com/3scale/libvmod-3scale.git
