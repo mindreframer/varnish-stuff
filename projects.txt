@@ -2,6 +2,7 @@ https://github.com/andreacampi/varnish-rb.git
 https://github.com/camptocamp/puppet-varnish.git
 https://github.com/dot2code/varnish-bans-manager.git
 https://github.com/Fotolia/varnishops.git
+https://github.com/hellvinz/purgerd.git
 https://github.com/inviqa/chef-varnish.git
 https://github.com/jcihocki/varnishd-skillshare.git
 https://github.com/luctus/chef-varnish-dashboard.git
@@ -19,4 +20,3 @@ https://github.com/varnish/Varnish-Book.git
 https://github.com/varnish/varnishgather.git
 https://github.com/vimeo/libvmod-boltsort.git
 https://github.com/xcir/libvmod-ldap.git
-https://github.com/hellvinz/purgerd.git
