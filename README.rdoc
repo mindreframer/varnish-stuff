@@ -1,0 +1,26 @@
+== Demo rails app for varnish skillshare class
+
+This is a test app that demos how to make use of http level caching and ESI to
+vertically scale a dynamic application.
+
+There are stepped branches in the repo, with each branch demonstrating a 
+different caching strategy for a new use case. 
+
+== Caching use cases
+
+1. Caching static content.
+2. Using ESI to cache pages with private or uncacheable content.
+3. Using ESI to cache static content that requires user login, like content behind a paywall.
+4. Using ESI to cache frequently used modules or fragments, like tweets in a timeline.
+
+== About me
+
+I'm co-founder and CTO of Startup Giraffe. We help non-technical entrepreneurs ship the 
+first versions of their web and mobile startups. We also run varnish as a service in the 
+cloud. Email john at startupgiraffe dot com for a free dev/staging varnishd instance,
+pricing information on production plans, or advice on how to vertically scale using varnish
+and ESI. 
+
+To sign up for this skillshare class in NYC, go here: http://skl.sh/14QX4ry
+
+

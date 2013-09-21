@@ -1,0 +1,95 @@
+<div id="feed-body" class="container">
+  <div class="row">
+    <div class="span8">
+      <div class="corgi_feed_well">
+        <div class="feed_stacked">
+          <div class="feed_item">
+            <div class="feed_body">
+              <div class="row">
+                <div class="feed_profile_pic">
+                  <%= image_tag "corgi.jpg", :class => "meta_image" %>
+                </div>
+                <div class="feed_text">
+                    <%= render partial: 'your_ip' %>
+                </div>
+              </div>
+            </div>
+            <div class="comment_area">
+              <p>Add a comment</p>
+              <form>
+                <textarea rows="3" class="span6"></textarea><br/>
+                <input type="submit" class="btn" />
+              </form>
+            </div>
+            <hr class="feed_hr">
+            <div class="bottom_meta">
+              <div class="row">
+                <div class="bottom_left">
+                  <div class="share_wrapper">
+                    <div class="share"><a href="#" class="share_button"><i class="icon-heart"></i></a></div>
+                    <div class="share_hidden">
+                      <ul class="hover_heart">
+                        <span class="internal_heart"><i class="icon-heart"></i> Share This Post</span>
+                        <div class="social_links">
+                          <li><span><i class="icon-twitter"></i> Twitter</span></li>
+                          <li><span><i class="icon-facebook"></i> Facebook</span></li>
+                          <li><span><i class="icon-pinterest"></i> Pinterest</span></li>
+                        </div>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="bottom_right">
+                  <a href="#">Corgi_like_bacon1</a> <span>|</span> <a href="#" class="show_comment_link">comment</a> <span>|</span> 2 days ago
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div> <!-- end span8 -->
+    <div class="span4">
+      <div class="corgi_feed_well">
+        <div class="sidebar_header">
+          <div class="sidebar_title">
+            <h4>Explanatory Sidebar</h4>
+          </div>
+        </div>
+        <hr class="feed_hr" />
+        <div class="sidebar_interior">
+          <i class="icon-ok"></i> IP is real!
+          <br/><br/>
+          <i class="icon-ok"></i> Geo location is dynamic!
+          <br/><br/>
+          <i class="icon-ok"></i> Amazing!
+          <br/><br/>
+          <i class="icon-hand-right"></i> Rendered at <%=  Time.now.utc.strftime( "%H:%M:%S" ) %> UTC
+          <br/><br/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<br/><br/>
+<div class="corgi_footer">
+  <div class="container">
+    <div class="row">
+      <div class="span12">
+        <ul>
+          <li><a href="">These</a></li>
+          <li><a href="">Are</a></li>
+          <li><a href="">Just</a></li>
+          <li><a href="">Dummy</a></li>
+          <li><a href="">Links</a></li>
+        </ul>
+        <div class="corgi_copyright">
+          &copy; 2013 Bootstrap Micro
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
