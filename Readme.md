@@ -45,6 +45,7 @@
   - [A general-purpose querystring manipulation module for Varnish](https://github.com/Dridi/libvmod-querystring.git)
   - [Dynamic backend](https://github.com/xcir/libvmod-backendutils.git)
   - [parsing post,get,cookie data](https://github.com/xcir/libvmod-parsereq.git)
+  - [dClass - Pattern Classification Engine](https://github.com/TheWeatherChannel/dClass.git)
 
 ## Misc
   - [Test framework written in Ruby to test varnish-cache routing and caching logic](https://github.com/TV4/Urushiol.git)
