@@ -15,3 +15,4 @@ https://github.com/varnish/newrelic_varnish_plugin.git
 https://github.com/varnish/vagent2.git
 https://github.com/varnish/Varnish-Book.git
 https://github.com/varnish/varnishgather.git
+https://github.com/nand2/libvmod-throttle.git
