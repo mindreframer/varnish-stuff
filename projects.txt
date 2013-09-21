@@ -6,6 +6,7 @@ https://github.com/dot2code/varnish-bans-manager.git
 https://github.com/dreamhost/varnish-vcl-collection.git
 https://github.com/flygoast/libvmod-lua.git
 https://github.com/Fotolia/varnishops.git
+https://github.com/hellvinz/purger.git
 https://github.com/hellvinz/purgerd.git
 https://github.com/inviqa/chef-varnish.git
 https://github.com/jcihocki/varnishd-skillshare.git
@@ -15,6 +16,7 @@ https://github.com/kenshaw/libvmod-dns.git
 https://github.com/lkarsten/libvmod-cookie.git
 https://github.com/luctus/chef-varnish-dashboard.git
 https://github.com/madepeople/Made_Cache.git
+https://github.com/metabrainz/3scale-vcl.git
 https://github.com/nand2/libvmod-throttle.git
 https://github.com/pad92/varnish.git
 https://github.com/pbruna/Varnish-Agent-Dashboard.git
@@ -28,5 +30,3 @@ https://github.com/varnish/Varnish-Book.git
 https://github.com/varnish/varnishgather.git
 https://github.com/vimeo/libvmod-boltsort.git
 https://github.com/xcir/libvmod-ldap.git
-https://github.com/hellvinz/purger.git
-https://github.com/metabrainz/3scale-vcl.git
