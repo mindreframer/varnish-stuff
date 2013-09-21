@@ -37,6 +37,10 @@
       Advanced Block Cache module for Magento that supports Varnish + ESI
        38 commits, last change: 2013-08-28 08:46:34, 23 stars, 6 forks
 
+    nand2/libvmod-throttle:
+      Varnish: Reject or delay requests after given tresholds are reached. (Think API rate limit, or per-ip MISS rate limit)
+       59 commits, last change: 2013-08-26 04:55:50, 28 stars, 7 forks
+
     pad92/varnish:
       Varnish minimal configuration (use builtin for best performances)
        3 commits, last change: 2013-08-21 18:16:12, 0 stars, 0 forks
