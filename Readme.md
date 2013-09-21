@@ -32,6 +32,10 @@
       a CLI realtime varnish traffic analyzer
        18 commits, last change: 2013-05-28 01:30:26, 9 stars, 3 forks
 
+    hellvinz/purgerd:
+      forward purge to a pool of varnish
+       22 commits, last change: 2013-05-16 14:35:01, 2 stars, 0 forks
+
     inviqa/chef-varnish:
       Chef cookbook that configures the varnish-cache.org repos for apt or yum and installs and configures Varnish 3.* based on the defined attributes.
        25 commits, last change: 2012-10-17 08:03:42, 6 stars, 8 forks
