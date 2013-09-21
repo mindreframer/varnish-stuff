@@ -1,0 +1,6 @@
+Module lua 
+Init init_function
+Function VOID init(PRIV_VCL)
+Function STRING dofile_str(PRIV_VCL, STRING)
+Function INT dofile_int(PRIV_VCL, STRING)
+Function VOID dofile_void(PRIV_VCL, STRING)
