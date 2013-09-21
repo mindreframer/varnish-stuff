@@ -28,6 +28,7 @@
   - [Varnish lua vmod to execute lua script in VCL](https://github.com/flygoast/libvmod-lua.git)
   - [VMOD for Varnish Cache which adds time utilities](https://github.com/jthomerson/libvmod-timeutils.git)
   - [Varnish VMOD to send data over UDP from VCL](https://github.com/mmb/vmod_dgram.git)
+  - [cURL bindings for Varnish through the Varnish Module interface](https://github.com/varnish/libvmod-curl.git)
 
 ## Misc
   - [Test framework written in Ruby to test varnish-cache routing and caching logic](https://github.com/TV4/Urushiol.git)
