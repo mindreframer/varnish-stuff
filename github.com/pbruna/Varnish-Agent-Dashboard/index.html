@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8">
+		<title>Varnish Dashboard</title>
+	  	<link rel="stylesheet" href="css/bootstrap-responsive.css">
+	  	<link rel="stylesheet" href="css/bootstrap.css">
+		<link rel="stylesheet" href="css/slider.css">
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+	<body>
+	  <div id="wrap">
+		
+		<div class="navbar navbar-fixed-top navbar-inverse">
+		  <div class="navbar-inner">
+			<div class="container">
+		      <a class="brand" href="#">Varnish Dashboard</a>
+		      <div class="pull-right" style="margin-top:10px">
+				<span style="color: gray; margin-right: 5px">Refresh time</span>
+			  	<div class="slider slider-horizontal" style="width: 100px">
+					<input value="" type="text" data-slider-min="-20" data-slider-max="20" data-slider-step="1" data-slider-value="2" data-slider-tooltip="hide">
+			  	</div>
+			  </div>
+		    </div>
+		  </div>
+		</div>
+		
+		<div class="container">
+			
+			<!-- First row // Graphs -->
+			<div class="row-fluid">
+				<div class="span4">
+					<div class="content-box">
+						<div class="content-box-header">
+							<i class="icon-fire"></i>
+							Cache Hit Ratio
+						</div>
+						<div id="hit-ratio" class="text-center gauge" style="width:250px; height:200px"></div>
+					</div>
+				</div>
+				<div class="span4">
+					<div class="content-box">
+						<div class="content-box-header">
+							<i class="icon-globe"></i>
+							Requests
+						</div>
+						<div id="request-gauge" class="text-center gauge" style="width:250px; height:200px"></div>
+					</div>
+				</div>
+				<div class="span4">
+					<div class="content-box">
+						<div class="content-box-header">
+							<i class="icon-globe"></i>
+							Bandwidth
+						</div>
+						<div id="bandwidth-gauge" class="text-center gauge" style="width:250px; height:200px"></div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Second row // Tables -->			
+			<div class="row-fluid">
+				<div class="span4">
+					<div class="content-box">
+						<div class="content-box-header">
+							<i class="icon-signal"></i>
+							Cache Metrics
+						</div>
+						<div id="cache-metrics-table"></div>
+					</div>
+				</div>
+				<div class="span4">
+					<div class="content-box">
+						<div class="content-box-header">
+							<i class="icon-signal"></i>
+							Traffic Metrics
+						</div>
+						<div id="traffic-metrics-table"></div>
+					</div>
+				</div>
+				<div class="span4">
+					<div class="content-box">
+						<div class="content-box-header">
+							<i class="icon-signal"></i>
+							Backend Metrics
+						</div>
+						<div id="backend-metrics-table"></div>
+					</div>
+				</div>
+			</div>		
+
+			<!-- Third row // Backend requests -->
+			<div class="row-fluid">
+				<div class="span12">
+					<div class="content-box">
+						<div class="content-box-header">
+							<i class="icon-thumbs-down"></i>
+							Backend Requests
+						</div>
+						<div id="backend_request-table">
+							<h2 style="margin-left:35px;"><small>Loading...</small></h2>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			
+		</div>
+		<div id="push" />
+	  </div>
+	</div>
+	 <div id="footer">
+		<div class="container" style="padding-top: 20px">
+			<p>
+
+				<a href="http://www.itlinux.cl/" class="pull-right"><img src="img/logo_mini.png"/ style="margin-top: -20px;
+				"></a>
+			</p>
+			
+		</div>
+	  </div>
+	<script id="backend_request-table-template" type="text/x-handlebars-template">
+			<table class="table table-striped" style="table-layout: fixed;">
+			    <thead>
+					<tr>
+					  <th style="width:10%">Counter</th>
+					  <th style="text-align:left;">URL</th>
+					</tr>
+				</thead>
+				<tbody>
+					{{#each request}}
+						<tr>
+							<td class="metric-value" style="width:10%">{{this.[1]}}</td>
+							<td class="metric-value" style="max-width: 100px;
+							    overflow: hidden;
+							    text-overflow: ellipsis;
+							    white-space: nowrap;"><a href="http://{{this.[0]}}" targer="_blank">{{this.[0]}}</a></td>
+						</tr>
+					{{/each}}
+				</tbody>
+			</table>
+	</script>
+	
+	<script id="metrics-table-template" type="text/x-handlebars-template">
+			<table class="table table-striped">
+			    <thead>
+					<tr>
+					  <th></th>
+					  <th style="text-align:center;">Actual</th>
+					  <th style="text-align:center;">Average</th>
+					</tr>
+				</thead>
+				<tbody>
+					{{#each metric}}
+						<tr>
+							<td>{{this.label}}</td>
+							<td class="metric-value" style="text-align:right;">{{this.new_value}}</td>
+							<td class="metric-value" style="text-align:right;">{{this.average_value}}</td>
+						</tr>
+					{{/each}}
+				</tbody>
+			</table>
+	</script>
+
+	  <script src="js/libs/jquery-1.9.1.min.js"></script>
+	  <script src="js/libs/bootstrap.min.js"></script>
+	  <script src="js/libs/handlebars-1.0.0-rc.3.js"></script>
+	  <script src="js/libs/justgage.js"></script>
+	  <script src="js/libs/raphael.2.1.0.min.js"></script>
+	  <script src="js/libs/bootstrap-slider.js"></script>
+	  <script src="js/app.js"></script>
+
+	</body>
+</html>
