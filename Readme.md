@@ -33,6 +33,10 @@
       A library and command-line tool, written in Ruby, for working with the Varnish HTTP cache
        105 commits, last change: 2013-09-12 04:01:06, 15 stars, 1 forks
 
+    ThijsFeryn/varnishtraining:
+      Vagrant box including VCL's  examples for my Varnish training
+       14 commits, last change: 2013-08-20 08:28:31, 4 stars, 4 forks
+
     varnish/newrelic_varnish_plugin:
       Integration plugin between Varnish and New Relic
        20 commits, last change: 2013-07-10 04:40:33, 7 stars, 8 forks
