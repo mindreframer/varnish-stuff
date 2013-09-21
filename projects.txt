@@ -33,3 +33,4 @@ https://github.com/varnish/varnishgather.git
 https://github.com/vimeo/libvmod-boltsort.git
 https://github.com/xcir/libvmod-ldap.git
 https://github.com/TV4/Urushiol.git
+https://github.com/allancrooks/vcl-cache-validation.git
