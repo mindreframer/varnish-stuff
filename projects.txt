@@ -41,3 +41,4 @@ https://github.com/vimeo/libvmod-boltsort.git
 https://github.com/xcir/libvmod-backendutils.git
 https://github.com/xcir/libvmod-ldap.git
 https://github.com/xcir/libvmod-parsereq.git
+https://github.com/xcir/vsltrans.git
