@@ -1,3 +1,4 @@
+https://github.com/allancrooks/vcl-cache-validation.git
 https://github.com/andreacampi/varnish-rb.git
 https://github.com/atdt/xvo.git
 https://github.com/camptocamp/puppet-varnish.git
@@ -26,11 +27,10 @@ https://github.com/robmiller/varnisher.git
 https://github.com/robszumski/varnish_etcd.git
 https://github.com/samlbits/puppet-varnish.git
 https://github.com/ThijsFeryn/varnishtraining.git
+https://github.com/TV4/Urushiol.git
 https://github.com/varnish/newrelic_varnish_plugin.git
 https://github.com/varnish/vagent2.git
 https://github.com/varnish/Varnish-Book.git
 https://github.com/varnish/varnishgather.git
 https://github.com/vimeo/libvmod-boltsort.git
 https://github.com/xcir/libvmod-ldap.git
-https://github.com/TV4/Urushiol.git
-https://github.com/allancrooks/vcl-cache-validation.git
