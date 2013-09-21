@@ -36,6 +36,10 @@
       Chef cookbook that configures the varnish-cache.org repos for apt or yum and installs and configures Varnish 3.* based on the defined attributes.
        25 commits, last change: 2012-10-17 08:03:42, 6 stars, 8 forks
 
+    jcihocki/varnishd-skillshare:
+      Accompanying test app with stepped branches for my varnishd skillshare class
+       23 commits, last change: 2013-07-20 15:06:13, 0 stars, 0 forks
+
     luctus/chef-varnish-dashboard:
       A chef recipe for the amazing Varnish Agent Dashboard (A real time Varnish Cache metrics dashboard)
        6 commits, last change: 2013-06-19 06:18:04, 1 stars, 0 forks
