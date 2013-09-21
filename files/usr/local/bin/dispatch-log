@@ -1,0 +1,171 @@
+#!/usr/bin/env perl
+use strict;
+use Sys::Syslog qw( :DEFAULT setlogsock);
+use FileHandle;
+
+
+# groups. set a single file/diretory for many hosts.
+my $config_file = '/etc/dispatch-log.conf';
+
+
+##########################
+##########################
+##                      ##
+## do NOT edit bellow ! ##
+##                      ##
+##########################
+##########################
+
+# autoflush
+$| = 1;
+
+&logit('info', "Starting daemon");
+
+my $pid = $$;
+
+my ($date, $url,$vhost, $line, %fhandlers, $ldate, $mtime);
+my $pid_file = "/var/run/dispatch-log.pid";
+my $LOGDIR = "/mnt/varnish";
+my %groups = () ;
+
+if ( -e $config_file ) {
+  open config, '<',$config_file;
+  my $config = join '', <config> ;
+  close config;
+  &logit('info','Configuration file found. Loading...');
+  eval $config;
+  if ($@) {
+    &logit('err','Error in configuration file - Cannot start - exiting');
+    exit(1);
+  }
+  &logit('info','Configuration loaded.');
+  
+  # get mtime, so that we can relload it without restarting script.
+  my @fstats = stat($config_file);
+  $mtime = $fstats[9];
+}
+
+open my $fd,'>', $pid_file or die $!;
+print $fd $pid;
+close $fd or die $!;
+
+
+# manage signals.
+$SIG{'INT'} = 'myexit';
+$SIG{'ABRT'} = 'myexit';
+
+open STDIN, '/usr/bin/varnishncsa -c |' or die('Cannot open /usr/bin/varnishncsa!');
+
+while (<STDIN>) {
+  $line = $_ ;
+  # fetch url
+  $line =~ m!(?:POST|GET) (http.+) HTTP!i ;
+  $url = "$1";
+
+  # fetch vhost
+  $url =~ m!http(?:s)?://([a-z0-9_\.\-]+)(?::[0-9]{2,4})?/!i ;
+  $vhost = $1;
+
+  my $dir = 'garbage';
+  # do we have to reload config file ?
+  if ( -e $config_file ) {
+    my @fstats = stat($config_file);
+    my $lmtime = $fstats[9];
+    if ($lmtime != $mtime) { # reload
+      &logit('info', 'Configuration changed. Trying to reload');
+      %groups = &myreload();
+
+      # set mtime to last mtime
+      $mtime = $lmtime;
+    }
+  }
+  if ($groups{$vhost}) {
+    $dir = $groups{$vhost};
+  }
+
+
+  # create directoy
+  if (! -d "$LOGDIR/$dir" ) {
+    mkdir "$LOGDIR/$dir";
+  }
+
+  $date = POSIX::strftime("%Y-%m-%d", localtime);
+
+  my $f_log = "$LOGDIR/$dir/$date.log";
+
+  $ldate = $date if (! $ldate);
+
+  if ( $ldate ne $date ) {
+    # if date changes, close all logs.
+    my $fh;
+    foreach my $key (keys %fhandlers) {
+      $fh = $fhandlers{$key};
+      &logit('info', "Date changed - closing $key log file");
+      unset($fhandlers{$key});
+      close $fh;
+    }
+  }
+
+  # keep filehandler in a hashmap.
+  if (! $fhandlers{$vhost}) {
+    local *LOG ;
+    open LOG, ">>", $f_log ;
+    LOG->autoflush(1);
+    $fhandlers{$vhost} = *LOG ;
+  }
+
+  my $flog = $fhandlers{$vhost} ;
+  print $flog $line or &exit_on_failure('Cannot write to log file!');
+  $ldate = $date ;
+}
+
+close STDIN;
+
+# we shouldn't arrive at this part.
+# If such a thing happens, that means that varnishncsa
+# died... that's not cool
+&logit('err', 'varnishncsa just died! Please check what happened');
+
+
+sub exit_on_failure() {
+  my $msg = shift;
+  &logit('err', $msg);
+  &myexit();
+}
+
+sub logit() {
+  my ($priority, $msg) = @_ ;
+  return 1 unless ($priority =~ /info|err|debug/);
+  setlogsock('unix');
+  openlog('dispatch-log','pid','daemon');
+  syslog($priority, $msg);
+  closelog();
+  return 0;
+}
+
+sub myreload() {
+  open config, '<',$config_file;
+  my $config = join '', <config> ;
+  close config;
+  my %old_groups = %groups;
+  %groups = ();
+  eval $config;
+  if ($@) {
+    &logit('err', 'An error occured while reloading '.$config_file.'. Please check.');
+    return %old_groups;
+  }
+  &logit('info', 'Configuration reloaded');
+  return %groups;
+}
+
+sub myexit() {
+  &logit('info', "Exiting. Closing files...");
+  my $fh;
+  foreach my $key (keys %fhandlers) {
+    $fh = $fhandlers{$key};
+    &logit('info', "  $key");
+    close $fh;
+  }
+  unlink $pid_file;
+  exit(0);
+}
