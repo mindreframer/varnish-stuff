@@ -29,6 +29,10 @@
       Real time Varnish Cache metrics dashboard
        132 commits, last change: 2013-04-29 08:06:41, 108 stars, 9 forks
 
+    robmiller/varnisher:
+      A library and command-line tool, written in Ruby, for working with the Varnish HTTP cache
+       105 commits, last change: 2013-09-12 04:01:06, 15 stars, 1 forks
+
     varnish/newrelic_varnish_plugin:
       Integration plugin between Varnish and New Relic
        20 commits, last change: 2013-07-10 04:40:33, 7 stars, 8 forks
