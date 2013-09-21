@@ -48,4 +48,8 @@
     varnish/Varnish-Book:
       Varnish Tutorial and training material
        323 commits, last change: 2013-07-08 07:13:17, 69 stars, 17 forks
+
+    varnish/varnishgather:
+      Information gathering tool for Varnish
+       35 commits, last change: 2013-09-10 22:56:06, 11 stars, 2 forks
 <!-- PROJECTS_LIST_END -->
