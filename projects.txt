@@ -18,6 +18,7 @@ https://github.com/kenshaw/libvmod-dns.git
 https://github.com/lkarsten/libvmod-cookie.git
 https://github.com/luctus/chef-varnish-dashboard.git
 https://github.com/madepeople/Made_Cache.git
+https://github.com/mattiasgeniar/varnish-3.0-configuration-templates.git
 https://github.com/metabrainz/3scale-vcl.git
 https://github.com/mmb/vmod_dgram.git
 https://github.com/nand2/libvmod-throttle.git
@@ -34,4 +35,3 @@ https://github.com/varnish/Varnish-Book.git
 https://github.com/varnish/varnishgather.git
 https://github.com/vimeo/libvmod-boltsort.git
 https://github.com/xcir/libvmod-ldap.git
-https://github.com/mattiasgeniar/varnish-3.0-configuration-templates.git
