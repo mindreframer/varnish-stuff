@@ -9,6 +9,11 @@
   - [Context-aware HTTP caching, 2012.09](http://asm89.github.io/2012/09/26/context-aware-http-caching.html)
   - [Simple scales faster and better in the real world - Video](http://vimeo.com/album/2525252/video/74388108)
   - [Setup Varnish as an API Proxy](https://support.3scale.net/howtos/api-configuration/varnish)
+  - [Varnish in Five Acts, 2013.05](http://dev.theladders.com/2013/05/varnish-in-five-acts/)
+
+## Invalidation/Purging
+  - [Tagged Cache Invalidation, 2012.09](http://blog.kevburnsjr.com/tagged-cache-invalidation)
+  - [Varnish in Five Acts, 2013.05](http://dev.theladders.com/2013/05/varnish-in-five-acts/)
 
 
 ## Slides
@@ -21,6 +26,10 @@
   - [Varnish @ Holiday-extras.com](https://www.varnish-cache.org/sites/default/files/10_Varnish_Presentation_Holidays-Extras.pdf)
   - [Varnish @ Opera](http://www.slideshare.net/cstrep/vug5-varnish-at-opera-software/)
   - [dClass and Varnish](http://www.slideshare.net/rezanaghibi/dclass)
+  - [Wetter.com case study, 2012.06](https://speakerdeck.com/gaylord/wettercom-case-study-on-symfony_live-2012-paris)
+  - [Loadbalancing 101](https://speakerdeck.com/bradwhittington/load-balancing-101)
+  - [Varnish @ Lanyrd, 2013.03](https://speakerdeck.com/andrewgodwin/inside-lanyrds-architecture)
+  - [Varnish @ Kiveda, 2013.05](https://speakerdeck.com/dzuelke/surviving-a-prime-time-tv-commercial-sfliveportland2013-2013-05-23)
 
 
 
@@ -68,6 +77,9 @@
 
 ## Books
   - [Varnish System Administration](https://www.varnish-software.com/static/pdfs/varnish-book-4.2-dirty.pdf)
+
+## Balancer in general
+  - https://github.com/observing/balancerbattle
 
 ## Fastly
   - https://github.com/fastly
