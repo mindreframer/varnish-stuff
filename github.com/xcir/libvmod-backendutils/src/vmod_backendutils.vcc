@@ -1,0 +1,9 @@
+Module backendutils
+Init init_function
+
+Function BACKEND createsimple(STRING,STRING,STRING)
+
+#Function BACKEND getbackend(STRING,BACKEND)
+
+Function VOID initsimple(BACKEND)
+
