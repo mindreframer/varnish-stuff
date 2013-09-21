@@ -13,3 +13,4 @@ https://github.com/varnish/Varnish-Book.git
 https://github.com/varnish/varnishgather.git
 https://github.com/samlbits/puppet-varnish.git
 https://github.com/madepeople/Made_Cache.git
+https://github.com/dot2code/varnish-bans-manager.git
