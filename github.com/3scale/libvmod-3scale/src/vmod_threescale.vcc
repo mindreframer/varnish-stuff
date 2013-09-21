@@ -1,0 +1,13 @@
+Module threescale
+Init init_function
+
+Function INT send_get_request_threaded(STRING, STRING, STRING, STRING)
+Function INT send_get_request(STRING, STRING, STRING, STRING)
+Function STRING send_get_request_body(STRING, STRING, STRING, STRING)
+Function INT send_post_request_threaded(STRING, STRING, STRING, STRING, STRING)
+
+Function STRING response_key(STRING)
+Function INT response_http_code(STRING)
+
+Function STRING url_encode(STRING)
+
