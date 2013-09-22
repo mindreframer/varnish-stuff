@@ -1,0 +1,10 @@
+#!/bin/bash
+# usage: run-varnish.sh /path/to/varnishd
+
+. varnish-config
+
+VARNISHD=$1
+
+$VARNISHD $DAEMON_OPTS
+PID=$!
+

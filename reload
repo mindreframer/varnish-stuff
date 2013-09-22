@@ -1,0 +1,19 @@
+#!/bin/bash
+# Reload a varnish config
+
+. varnish-config
+
+NOW=`date +%s`
+
+error()
+{
+    echo 1>&2 "Failed to reload $VARNISH_VCL_CONF."
+    exit 1
+}
+
+varnishadm -T "${VARNISH_ADMIN_LISTEN_ADDRESS}:${VARNISH_ADMIN_LISTEN_PORT}" \
+  vcl.load reload$NOW $VARNISH_VCL_CONF || error
+varnishadm -T "${VARNISH_ADMIN_LISTEN_ADDRESS}:${VARNISH_ADMIN_LISTEN_PORT}" \
+  vcl.use reload$NOW || error
+echo Current configs:
+varnishadm -T "${VARNISH_ADMIN_LISTEN_ADDRESS}:${VARNISH_ADMIN_LISTEN_PORT}" vcl.list
