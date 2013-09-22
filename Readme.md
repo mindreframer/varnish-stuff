@@ -69,6 +69,7 @@
   - [Setting client.ip in Varnish VCL with libvmod-ipcast](https://github.com/lkarsten/libvmod-ipcast.git)
 
 ## Misc
+  - [The Varnish Agent is a REST interface to the Varnish CLI and shmlog, adding a bit of persistence to allow remote control of Varnish](https://github.com/varnish/vagent2)
   - [Test framework written in Ruby to test varnish-cache routing and caching logic](https://github.com/TV4/Urushiol.git)
   - [Varnish Bans Manager (VBM) is a simple server and web UI designed to ease management of bans in complex Varnish deployments](https://github.com/dot2code/varnish-bans-manager)
   - [Varnish Security Firewall](https://github.com/comotion/VSF.git)
