@@ -42,8 +42,8 @@ https://github.com/varnish/vagent2.git
 https://github.com/varnish/Varnish-Book.git
 https://github.com/varnish/varnishgather.git
 https://github.com/vimeo/libvmod-boltsort.git
+https://github.com/xcir/C81-VarnishCache-inline-C-VMOD-guidebook.git
 https://github.com/xcir/libvmod-backendutils.git
 https://github.com/xcir/libvmod-ldap.git
 https://github.com/xcir/libvmod-parsereq.git
 https://github.com/xcir/vsltrans.git
-https://github.com/xcir/C81-VarnishCache-inline-C-VMOD-guidebook.git
