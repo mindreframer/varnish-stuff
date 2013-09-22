@@ -8,6 +8,7 @@ https://github.com/csfrancis/libvmod-redis.git
 https://github.com/dot2code/varnish-bans-manager.git
 https://github.com/dreamhost/varnish-vcl-collection.git
 https://github.com/Dridi/libvmod-querystring.git
+https://github.com/drsnyder/varnish-testbed.git
 https://github.com/flygoast/libvmod-lua.git
 https://github.com/Fotolia/varnishops.git
 https://github.com/hellvinz/purger.git
@@ -48,4 +49,3 @@ https://github.com/xcir/libvmod-backendutils.git
 https://github.com/xcir/libvmod-ldap.git
 https://github.com/xcir/libvmod-parsereq.git
 https://github.com/xcir/vsltrans.git
-https://github.com/drsnyder/varnish-testbed.git
