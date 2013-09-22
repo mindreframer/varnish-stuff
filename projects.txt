@@ -19,6 +19,7 @@ https://github.com/jib/libvmod-timers.git
 https://github.com/jthomerson/libvmod-timeutils.git
 https://github.com/kenshaw/libvmod-dns.git
 https://github.com/lkarsten/libvmod-cookie.git
+https://github.com/lkarsten/libvmod-ipcast.git
 https://github.com/luctus/chef-varnish-dashboard.git
 https://github.com/madepeople/Made_Cache.git
 https://github.com/mattiasgeniar/varnish-3.0-configuration-templates.git
@@ -45,4 +46,3 @@ https://github.com/xcir/libvmod-backendutils.git
 https://github.com/xcir/libvmod-ldap.git
 https://github.com/xcir/libvmod-parsereq.git
 https://github.com/xcir/vsltrans.git
-https://github.com/lkarsten/libvmod-ipcast.git
