@@ -1,0 +1,2 @@
+Module uuid
+Function STRING uuid(PRIV_CALL)
