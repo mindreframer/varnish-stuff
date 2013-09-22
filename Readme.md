@@ -40,6 +40,7 @@
 
 
 ## [Modules](https://www.varnish-cache.org/vmods)
+  - [The essential vmods all Varnish users should know about, 2013.07](https://www.varnish-software.com/blog/essential-vmods-all-varnish-users-should-know-about)
 
   - [Varnish: Reject or delay requests after given tresholds are reached. (Think API rate limit, or per-ip MISS rate limit)](https://github.com/nand2/libvmod-throttle.git)
   - [A fast Varnish module for sorting query string parameters.](https://github.com/vimeo/libvmod-boltsort.git)
