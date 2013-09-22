@@ -39,6 +39,7 @@
   - https://github.com/mattiasgeniar/varnish-3.0-configuration-templates.git
 
 ## HowTo Modules
+  - [Testing VMODs with Travis.CI, 2013.09](http://lassekarstensen.wordpress.com/2013/09/10/testing-vmods-with-travis-travis-ci-org/)
   - [The essential vmods all Varnish users should know about, 2013.07](https://www.varnish-software.com/blog/essential-vmods-all-varnish-users-should-know-about)
   - [Building a Varnish VMOD on Debian, 2013.07](http://lassekarstensen.wordpress.com/2013/07/29/building-a-varnish-vmod-on-debian/)
 
