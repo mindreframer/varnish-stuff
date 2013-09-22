@@ -145,6 +145,10 @@
       A general-purpose querystring manipulation module for Varnish
        40 commits, last change: 2013-07-22 22:09:26, 13 stars, 5 forks
 
+    drsnyder/varnish-testbed:
+      A suite of tools for testing varnish and configuring varnish cache.
+       4 commits, last change: 2013-02-14 10:09:32, 1 stars, 0 forks
+
     flygoast/libvmod-lua:
       Varnish lua vmod to execute lua script in VCL.
        1 commits, last change: 2013-05-30 09:07:52, 3 stars, 0 forks
