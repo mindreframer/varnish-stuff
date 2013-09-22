@@ -64,6 +64,7 @@
   - [dClass - Pattern Classification Engine](https://github.com/TheWeatherChannel/dClass.git)
   - [API Proxy](https://github.com/3scale/libvmod-3scale.git), [Official](https://www.varnish-cache.org/vmod/api-proxy)
   - [Varnish Shield Module - Provides basic means for DDoS protection](https://github.com/varnish/libvmod-shield.git)
+  - [Setting client.ip in Varnish VCL with libvmod-ipcast](https://github.com/lkarsten/libvmod-ipcast.git)
 
 ## Misc
   - [Test framework written in Ruby to test varnish-cache routing and caching logic](https://github.com/TV4/Urushiol.git)
