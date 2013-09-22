@@ -11,6 +11,9 @@
   - [Setup Varnish as an API Proxy](https://support.3scale.net/howtos/api-configuration/varnish)
   - [Varnish in Five Acts, 2013.05](http://dev.theladders.com/2013/05/varnish-in-five-acts/)
   - [Packaging Varnish VMODs, 2013.06](http://www.kreuzwerker.de/en/blog/packaging-varnish-vmods/)
+  - [Varnish trick: Serve stale content while refetching, 2012.10](http://lassekarstensen.wordpress.com/2012/10/11/varnish-trick-serve-stale-content-while-refetching/)
+  - [Varnishncsa and std.log()](http://lassekarstensen.wordpress.com/2012/06/15/varnishncsa-and-std-log/)
+  - [Using Varnish For Paywalls: Moving Logic To The Edge](http://highscalability.com/blog/2012/9/12/using-varnish-for-paywalls-moving-logic-to-the-edge.html)
 
 ## Invalidation/Purging
   - [Tagged Cache Invalidation, 2012.09](http://blog.kevburnsjr.com/tagged-cache-invalidation)
