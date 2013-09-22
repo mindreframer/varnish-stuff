@@ -38,10 +38,11 @@
   - https://github.com/metabrainz/3scale-vcl.git
   - https://github.com/mattiasgeniar/varnish-3.0-configuration-templates.git
 
+## HowTo Modules
+  - [The essential vmods all Varnish users should know about, 2013.07](https://www.varnish-software.com/blog/essential-vmods-all-varnish-users-should-know-about)
+  - [Building a Varnish VMOD on Debian, 2013.07](http://lassekarstensen.wordpress.com/2013/07/29/building-a-varnish-vmod-on-debian/)
 
 ## [Modules](https://www.varnish-cache.org/vmods)
-  - [The essential vmods all Varnish users should know about, 2013.07](https://www.varnish-software.com/blog/essential-vmods-all-varnish-users-should-know-about)
-
   - [Varnish: Reject or delay requests after given tresholds are reached. (Think API rate limit, or per-ip MISS rate limit)](https://github.com/nand2/libvmod-throttle.git)
   - [A fast Varnish module for sorting query string parameters.](https://github.com/vimeo/libvmod-boltsort.git)
   - [LDAP module for Varnish](https://github.com/xcir/libvmod-ldap.git)
