@@ -1,0 +1,13 @@
+#!/bin/bash
+. varnish-config
+PURGE=$1
+
+if [ -z $PURGE ]; then
+        echo "Usage: varnishpurge site_regex"
+        echo "  varnishpurge www.head-fi.org"
+        exit;
+fi
+
+echo "Purging $1"
+/bin/echo "purge req.http.host ~ $1" | nc $VARNISH_ADMIN_LISTEN_ADDRESS $VARNISH_ADMIN_LISTEN_PORT 
+echo "Purging completed."
