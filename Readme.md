@@ -241,6 +241,10 @@
       A varnish module for the samlbits.net CDN
        50 commits, last change: 2013-09-19 12:33:02, 0 stars, 0 forks
 
+    Sharecare/libvmod-uuid:
+      Varnish vmod for creating a uuid
+       6 commits, last change: 2013-09-03 07:07:11, 1 stars, 0 forks
+
     TheWeatherChannel/dClass:
       Device Classification Engine
        131 commits, last change: 2013-08-07 07:46:48, 33 stars, 11 forks
