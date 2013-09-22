@@ -1,0 +1,19 @@
+Varnish Cache inline-C/VMOD guide book
+=====================================
+this document was published at Comiket 81.
+
+LICENSE
+----------------
+* CC-BY
+
+WRITER
+----------------
+* Syohei Tanaka(@xcir)
+
+ENGLISH TRANSLATION
+-------------------
+* Rubén Romero(@ruben_varnish)
+
+The goal of this guide book is to provide the Varnish user community with documentation for usage of Inline-C within Varnish as well as how to go about when extending Varnish Cache with Modules, so called VMODs.
+
+Hopefully the long-term result of this work is to add parts of its content into the Varnish Documentation as well as the Varnish Book.
