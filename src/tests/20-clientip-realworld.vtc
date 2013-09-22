@@ -1,0 +1,43 @@
+varnishtest "Test ipcast vmod"
+
+server s1 {
+       rxreq
+       txresp
+} -start
+
+varnish v1 -vcl+backend {
+	import ipcast from "${vmod_topbuild}/src/.libs/libvmod_ipcast.so";
+	import std;
+	sub vcl_recv {
+		unset req.http.x-newip;
+		if (req.http.X-Forwarded-For ~ ",") {
+			set req.http.x-newip = regsub(req.http.X-Forwarded-For,
+				"^[^,]+.?.?(.*)$", "\1");
+		}
+		else {
+			set req.http.x-newip =  req.http.X-Forwarded-For;
+		}
+		if (ipcast.clientip(req.http.x-newip) != 0) {
+			error 400 "Bad request";
+		}
+	}
+	sub vcl_deliver {
+		set resp.http.x-ip = client.ip;
+	}
+} -start
+
+client c1 {
+	txreq -url "/" -hdr "X-Forwarded-For: 192.168.101.227, 172.16.231.30"
+	rxresp
+	expect resp.http.x-ip == "172.16.231.30"
+
+	txreq -url "/" \
+		-hdr "X-Forwarded-For: 2a00:1028:83a2:4542:8d6f:1a29:8f2d:df84"
+	rxresp
+	expect resp.http.x-ip == "2a00:1028:83a2:4542:8d6f:1a29:8f2d:df84"
+
+	# reduced size form.
+	txreq -url "/" -hdr "X-Forwarded-For: 2001:67c:2804:1001::c21f:27a4"
+	rxresp
+	expect resp.http.x-ip == "2001:67c:2804:1001::c21f:27a4"
+} -run

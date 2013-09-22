@@ -1,0 +1,12 @@
+Source: libvmod-ipcast
+Section: web
+Priority: extra
+Maintainer: Lasse Karstensen <lkarsten@varnish-software.com>
+Build-Depends: debhelper (>= 7), build-essential, python-docutils
+Standards-Version: 3.8.1
+Vcs-Git: git://github.com/lkarsten/libvmod-ipcast.git
+
+Package: libvmod-ipcast
+Architecture: all
+Depends: varnish, ${misc:Depends}
+Description: Vmod for Varnish

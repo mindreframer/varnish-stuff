@@ -1,0 +1,3 @@
+Module ipcast
+Init init_function
+Function INT clientip(STRING)
