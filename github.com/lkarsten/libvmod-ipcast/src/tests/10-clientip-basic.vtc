@@ -1,0 +1,42 @@
+varnishtest "Test ipcast vmod"
+
+server s1 {
+       rxreq
+       txresp
+
+       rxreq
+       txresp
+} -start
+
+varnish v1 -vcl+backend {
+	import ipcast from "${vmod_topbuild}/src/.libs/libvmod_ipcast.so";
+	acl foo {
+		"127.0.0.2";
+		"2001:db8::2";
+	}
+	sub vcl_recv {
+		if (ipcast.clientip(req.http.X-Forwarded-For) != 0) {
+			error 400 "Bad request";
+		}
+	}
+	sub vcl_deliver {
+		set resp.http.x-ip = client.ip;
+		if (client.ip ~ foo) {
+			set resp.http.x-aclmatch = "true";
+		}
+	}
+} -start
+
+client c1 {
+	txreq -url "/" -hdr "X-Forwarded-For: 127.0.0.2"
+	rxresp
+	expect resp.http.x-ip == "127.0.0.2"
+	expect resp.http.x-aclmatch == "true"
+
+	txreq -url "/" -hdr "X-Forwarded-For: 2001:db8::2"
+	rxresp
+	expect resp.http.x-ip == "2001:db8::2"
+	expect resp.http.x-aclmatch == "true"
+}
+
+client c1 -run
