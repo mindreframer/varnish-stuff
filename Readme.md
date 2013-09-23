@@ -74,6 +74,7 @@
   - [Varnish vmod for creating a UUID](https://github.com/Sharecare/libvmod-uuid.git)
 
 ## Misc
+  - [Varnish Utilities](https://www.varnish-cache.org/utilities)
   - [The Varnish Agent is a REST interface to the Varnish CLI and shmlog, adding a bit of persistence to allow remote control of Varnish](https://github.com/varnish/vagent2)
   - [Test framework written in Ruby to test varnish-cache routing and caching logic](https://github.com/TV4/Urushiol.git)
   - [Varnish Bans Manager (VBM) is a simple server and web UI designed to ease management of bans in complex Varnish deployments](https://github.com/dot2code/varnish-bans-manager)
