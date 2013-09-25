@@ -1,5 +1,6 @@
 ## Varnish:
 
+  - [Scaling Django to 8 Billion Page Views, 2013.09 (disqus)](http://blog.disqus.com/post/62187806135/scaling-django-to-8-billion-page-views)
   - [Global Varnish Cluster with GeoDNS](http://www.slideshare.net/kimlindholm/globalvarnish-cluster-with-geodns)
 
   - [How to build your own CDN using BIND, GeoIP, Nginx, and Varnish, 2010.07](http://blog.unixy.net/2010/07/how-to-build-your-own-cdn-using-bind-geoip-nginx-and-varnish/)
@@ -14,6 +15,7 @@
   - [Varnish trick: Serve stale content while refetching, 2012.10](http://lassekarstensen.wordpress.com/2012/10/11/varnish-trick-serve-stale-content-while-refetching/)
   - [Varnishncsa and std.log()](http://lassekarstensen.wordpress.com/2012/06/15/varnishncsa-and-std-log/)
   - [Using Varnish For Paywalls: Moving Logic To The Edge](http://highscalability.com/blog/2012/9/12/using-varnish-for-paywalls-moving-logic-to-the-edge.html)
+  - [Withstanding DDOS attacks with Varnish and COTS hardware, 2013.04](https://www.varnish-software.com/blog/withstanding-ddos-attacks-varnish-and-cots-hardware)
 
 ## Invalidation/Purging
   - [Tagged Cache Invalidation, 2012.09](http://blog.kevburnsjr.com/tagged-cache-invalidation)
