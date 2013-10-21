@@ -1,8 +1,8 @@
-require './lib/vtc'
-require './lib/vcl'
-require './lib/client_test_base'
-require './lib/server'
-require './lib/varnish'
+require 'vtc'
+require 'vcl'
+require 'client_test_base'
+require 'server'
+require 'varnish'
 
 module Urushiol
   class VarnishTestBase
@@ -35,7 +35,7 @@ module Urushiol
       @vtc_obj.mock_clients_and_tests(tests)
     end
 
-    def client_testcase(name,config="",&block)
+    def client_testcase(name="c",config="",&block)
       test = ClientTestBase.new(name,config)
       yield test if block_given?
       @vtc_obj.append_config(test.test_source)
@@ -65,12 +65,24 @@ module Urushiol
 
     def run
       create_test_file(@vtc_obj)
-      system("varnishtest /tmp/test.vtc")
-      cleanup
+      varnishd_check = `which varnishd` ;  result=$?.success?
+      if result == true
+        output=`varnishtest /tmp/test.vtc` ;  result=$?.success?
+        if result == false
+          puts output
+          puts "\nVarnishtests returned errors, see stack trace above."
+        else
+          puts "Test completed successfully without errors."
+        end
+        cleanup
+      else
+        puts "Varnish does not seem to be installed on your computer. Urushiol can't run without Varnish"
+      end
+
     end
 
     def cleanup
-      system("rm /tmp/test.vtc")
+      #system("rm /tmp/test.vtc")
     end
   end
 end

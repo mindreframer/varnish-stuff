@@ -1,0 +1,105 @@
+#!/usr/bin/env ruby
+require 'urushiol'
+require 'test_case'
+require 'pathname'
+require 'meta/help'
+require 'meta/version'
+
+def run_testfile file_ref
+  test = TestCase.new file_ref
+
+  puts "\nRunning test #{Pathname.new(file_ref).basename} :  "
+
+  test.instance_eval("def run \n #{IO.read(file_ref)} \nend")
+  test.run
+end
+
+def run_typed_testfiles test_files, vcl_file, type
+  test_head = IO.readlines("#{root_path}meta/#{type}_top.uru").join('').sub(";file_ref;", vcl_file)
+
+  test_files.each do |test_file|
+    test = TestCase.new test_file
+
+    puts "\nRunning test #{Pathname.new(test_file).basename} :"
+
+    test.instance_eval("def run \n#{test_head}\n#{IO.read(test_file)} \nend")
+
+    test.run
+  end
+end
+
+def create_test_file test_name
+  out_file = File.new("#{test_name}.uru", "w")
+  out_file << IO.readlines("#{root_path}meta/test_skeleton.uru").join('')
+  out_file.close
+
+  puts "#{test_name}.uru successfully created."
+end
+
+def root_path
+  File.dirname(__FILE__).to_s+"/../"
+end
+
+def pre_run_check(argv_index)
+  ARGV.each do |testfile|
+    if File.exists? testfile
+      yield testfile
+    end
+  end
+end
+
+if ARGV.empty?
+  puts "Welcome to Urushiol. The easy test framework for varnish vcl files.
+Append -h flag for usage information."
+
+elsif (ARGV.include?("--version") || ARGV.include?("-v"))
+  puts "Version : #{Urushiol::VERSION}"
+
+elsif (ARGV.include?("--help") || ARGV.include?("-h"))
+  puts Urushiol::HELP
+
+elsif (ARGV.include?("--live") || ARGV.include?("-l"))
+  live_flag = "--live" if ARGV.include?("--love")
+  live_flag = "-l" if ARGV.include?("-l")
+
+  vclfile    = ARGV[ARGV.find_index(live_flag)+1]
+  test_files = ARGV[(ARGV.find_index(live_flag)+2)...ARGV.length]
+  run_typed_testfiles(test_files, vclfile, "live")
+
+
+elsif (ARGV.include?("--mock") || ARGV.include?("-m"))
+
+  mock_flag = "--mock" if ARGV.include?("--mock")
+  mock_flag = "-m" if ARGV.include?("-m")
+
+  vclfile    = ARGV[ARGV.find_index(mock_flag)+1]
+  test_files = ARGV[(ARGV.find_index(mock_flag)+2)...ARGV.length]
+  run_typed_testfiles(test_files, File.absolute_path(vclfile), "mock")
+
+
+elsif ARGV.first.downcase == "integritycheck"
+  Dir.glob("#{root_path}test/**/*").each do |testfile|
+    run_testfile testfile
+  end
+elsif ARGV.first == "generate"
+  if ARGV[1] != nil
+    create_test_file(ARGV[1])
+  else
+    puts "Please specify a name for your test."
+  end
+elsif File.exists? ARGV.first
+  ARGV.each do |testfile|
+    if File.exists? testfile
+      run_testfile testfile
+    end
+  end
+else
+  puts "Urushiol did not recognize \"#{ARGV.join(" ")} \" as argument(s)."
+end
+
+
+
+
+
+
+

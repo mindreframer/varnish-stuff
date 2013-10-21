@@ -1,7 +1,3 @@
-require './lib/varnishtest_base'
-
-testcase = Urushiol::VarnishTestBase.new("second test")
-
 testcase.mock_server("s1") do |server|
   server.rxreq
   server.expect "req.proto == HTTP/1.1"
