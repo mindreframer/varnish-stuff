@@ -1,13 +1,13 @@
-require './lib/txreq'
+require 'txreq'
 
 module Urushiol
   class ClientTestBase
     class << self
-      def wait(name)
+      def wait(name = "c")
         "\nclient #{name} -wait"
       end
     end
-    def initialize (name,config="")
+    def initialize (name,config = "")
       @client_test = "\nclient #{name} #{config}{"
     end
 

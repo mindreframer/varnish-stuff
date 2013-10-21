@@ -1,0 +1,7 @@
+#Reference the vclfile to be tested
+vcl_file_ref = ';file_ref;'
+
+#Mock varnish and give it a vcl file to run
+testcase.mock_varnish("v1") do |varnish|
+  varnish.vcl_file vcl_file_ref
+end

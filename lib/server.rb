@@ -1,4 +1,4 @@
-require './lib/txresp'
+require 'txresp'
 
 module Urushiol
   class Server

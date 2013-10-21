@@ -1,8 +1,4 @@
-require './lib/varnishtest_base'
-
-testcase = Urushiol::VarnishTestBase.new("forth test")
-
-testcase.mock_server("s1") do |server|
+testcase.mock_server "s1" do |server|
   server.rxreq
   server.txresp do |resp|
     resp.header "Connection: close"
@@ -10,7 +6,7 @@ testcase.mock_server("s1") do |server|
   end
 end
 
-testcase.mock_varnish("v1") do |varnish|
+testcase.mock_varnish "v1"  do |varnish|
   varnish.vcl_backend 'backend b2 {
 		.host = "${s1_addr}";
 		.port = "${s1_port}";
@@ -22,7 +18,7 @@ testcase.mock_varnish("v1") do |varnish|
 end
 
 
-testcase.client_testcase("c1") do |test|
+testcase.client_testcase do |test|
   test.txreq do |req|
     req.url "/"
   end
@@ -31,8 +27,5 @@ testcase.client_testcase("c1") do |test|
   test.expect "resp.body == \"012345\""
 end
 
-testcase.server do |server|
-  server.wait("s1")
-end
 
 testcase.run
