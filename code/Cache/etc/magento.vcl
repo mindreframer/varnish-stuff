@@ -1,4 +1,13 @@
+# Made_Cache (with optional Made_CouchdbSession) Varnish 3 VCL
+#
+# https://github.com/madepeople/Made_Cache
+#
 import std;
+
+# Uncomment this is you've compiled the libvmod-curl extension and have
+# CouchDB session management set up. Also, search for "curl" in this file
+# and set the rest up
+#import curl;
 
 backend default {
     .host = "127.0.0.1";
@@ -20,7 +29,7 @@ acl purge {
 }
 
 sub vcl_recv {
-    # Ban specific object in the cache
+    # Purge specific object from the cache
     if (req.request == "PURGE")  {
         if (!client.ip ~ purge) {
             error 405 "Not allowed.";
@@ -50,9 +59,7 @@ sub vcl_recv {
         if (!client.ip ~ purge) {
             error 405 "Not allowed.";
         }
-        # If there are multiple vhosts we only want to clear all cache for
-        # the one issuing the request
-        ban("req.url ~ .*");
+        ban("req.url ~ /");
         error 200 "Flushed";
     }
 
@@ -73,12 +80,33 @@ sub vcl_recv {
     # Keep track of logged in users
     if (req.http.Cookie ~ "frontend=") {
         set req.http.X-Session-UUID =
-            regsub(req.http.Cookie, "^.*?frontend=([^;]*);*.*$", "\1");
+            regsub(req.http.Cookie, ".*frontend=([^;]+).*", "\1");
+
+        # This is where we have to check for session validity. Needs the curl vmod
+        # to be installed and imported at the top of this file. If the session is
+        # invalid we pass the user to the backend. Your CouchDB URL has to be
+        # defined manually here, in the form:
+        #
+        #   http://couchdb.url.or.ip:port/magento_session/_design/misc/_show/is_session_valid/SESSION_ID_FROM_REQUEST
+        #
+        # The following show function needs to be defined in CouchDB as well:
+        #
+        #   https://gist.github.com/jonathanselander/1c71f413911116ecba11
+        #
+        #if (!(req.url ~ "\.(css|js|jpg|png|gif|gz|tgz|bz2|tbz|mp3|ogg|swf|flv)$") &&
+        #        !(req.url ~ "/madecache/varnish/(esi|messages)")) {
+        #    curl.fetch("http://127.0.0.1:5984/magento_session/_design/misc/_show/is_session_valid/" + req.http.X-Session-UUID);
+        #    if (curl.body() != "true") {
+        #        curl.free();
+        #        return(pass);
+        #    }
+        #    curl.free();
+        #}
     }
 
     # Pass anything other than GET and HEAD directly.
     if (req.request != "GET" && req.request != "HEAD") {
-        /* We only deal with GET and HEAD by default */
+        # We only deal with GET and HEAD by default
         return (pass);
     }
 
@@ -102,12 +130,12 @@ sub vcl_recv {
 }
 
 sub vcl_hash {
-    # ESI request
+    # ESI Request
     if (req.url ~ "/madecache/varnish/(esi|messages)") {
         hash_data(regsub(req.url, "(/hash/[^\/]+/).*", "\1"));
 
         # Logged in user, cache on UUID level
-        if (req.http.X-Session-UUID) {
+        if (req.http.X-Session-UUID && req.http.X-Session-UUID != "") {
             hash_data(req.http.X-Session-UUID);
         }
     } else {
@@ -142,8 +170,13 @@ sub vcl_miss {
 sub vcl_fetch {
     # Pass the cookie requests directly to the backend, without caching
     if (req.url ~ "/madecache/varnish/cookie") {
+        # Cache not to cache
         return (hit_for_pass);
     }
+
+    # Hold down object variations by removing the referer and vary headers
+    unset beresp.http.referer;
+    unset beresp.http.vary;
 
     # If the X-Made-Cache-Ttl header is set, use it, otherwise default to
     # not caching the contents (0s)
@@ -151,17 +184,19 @@ sub vcl_fetch {
         if (beresp.http.Content-Type ~ "text/html" || beresp.http.Content-Type ~ "text/xml") {
             set beresp.do_esi = true;
             set beresp.ttl = std.duration(beresp.http.X-Made-Cache-Ttl, 0s);
+
+            # Don't cache expire headers, we maintain those differently
+            unset beresp.http.expires;
         } else {
             # TTL for static content
             set beresp.ttl = 1w;
         }
 
-        # Don't cache expire headers, we maintain those differently
-        unset beresp.http.expires;
-
         # Caching the cookie header would make multiple clients share session
-        set req.http.tempCookie = beresp.http.Set-Cookie;
-        unset beresp.http.Set-Cookie;
+        if (beresp.ttl > 0s) {
+            set req.http.tempCookie = beresp.http.Set-Cookie;
+            unset beresp.http.Set-Cookie;
+        }
 
         # Cache (if positive TTL)
         return (deliver);
@@ -173,15 +208,11 @@ sub vcl_fetch {
 
 sub vcl_deliver {
     # To debug if it's a hit or a miss
-    if (req.http.X-Made-Cache-Debug) {
-        set resp.http.X-Cache-Hits = obj.hits;
-    }
+    set resp.http.Cache-Control = "no-store, no-cache, must-revalidate, post-check=0, pre-check=0";
 
     if (req.http.tempCookie) {
-        # We saved the cookie to give the user that cached the page a session
-        set resp.http.Set-Cookie = req.http.tempCookie;
-
         # Version of https://www.varnish-cache.org/trac/wiki/VCLExampleLongerCaching
+        set resp.http.Set-Cookie = req.http.tempCookie;
         set resp.http.age = "0";
     }
 
