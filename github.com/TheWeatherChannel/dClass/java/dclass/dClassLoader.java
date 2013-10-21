@@ -101,14 +101,21 @@ public class dClassLoader
     private static String detectOS()
     {
         String os=System.getProperty("os.name").toLowerCase();
-        String bit=System.getProperty("sun.arch.data.model");
+        String arch=System.getProperty("os.arch").toLowerCase();
+
+        if(arch.equals("amd64"))
+            arch="x86_64";
+        else if(arch.equals("x86") || arch.equals("i686") || arch.equals("i386"))
+            arch="x86_32";
+        else if(arch.startsWith("armv7"))
+            arch="armv7";
 
         if(os.contains("windows"))
-            return "win"+bit+".dll";
+            return "_win_"+arch+".dll";
         else if(os.contains("linux"))
-            return "linux"+bit+".so";
+            return "_linux_"+arch+".so";
         else if(os.contains("mac os"))
-            return "darwin"+bit+".dylib";
+            return "_osx_"+arch+".dylib";
 
         return "";
     }
