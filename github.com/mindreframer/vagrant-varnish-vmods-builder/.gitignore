@@ -1,0 +1,5 @@
+.vagrant
+tmp/
+.DS_Store
+pkg/*.deb
+sh/install-varnish.sh

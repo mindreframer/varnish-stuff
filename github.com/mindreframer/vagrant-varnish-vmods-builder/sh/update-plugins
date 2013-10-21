@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo  'INSTALLING vagrant-cachier...'
+vagrant plugin install vagrant-cachier

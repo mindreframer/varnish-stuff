@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+if [ ! -e /var/tmp/apt-get-updated ]; then
+  apt-get update && touch /var/tmp/apt-get-updated
+fi
+
+apt-get install -y git-core wget build-essential
+
+## install FPM
+gem list |grep fpm
+RETVAL=$?
+
+if [ $RETVAL -eq 1 ]; then
+  echo "installing fpm gem"
+  gem install fpm --no-ri --no-rdoc
+fi
+ruby /vagrant/sh/varnish_installer.rb > /vagrant/sh/install-varnish.sh
+chmod +x /vagrant/sh/install-varnish.sh
+
+echo "EXECUTE following to package varnish into pkg folder"
+echo 'vagrant ssh box1 -c "sudo /vagrant/sh/install-varnish.sh"'
