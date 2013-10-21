@@ -37,8 +37,16 @@ simplecommands = (('date',),
                   ('find', '/usr/local', '-name', 'varnish',),
                   ('grep', '-s', 'varnish', '/var/log/messages',),
                   ('grep', '-s', 'varnish', '/var/log/syslog',),
+                  ('iptables', '-n', '-L',),
                   )
 
+# Format is (command, filter, countonly)
+filteredcommands = (
+    (["ps", "aux"], lambda x: re.search(r'(varnish|apache|mysql|nginx|httpd|stud|stunnel)', x), False),
+    (["rpm", "-qa"],  lambda x: re.search(r'varnish', x), False),
+    (["netstat", "-np"], None, True,),
+    (["netstat", "-np"], lambda x: re.search(r'ESTABLISHED', x), True,),
+)
 
 fileincludes = (
         '/var/log/dmesg',
@@ -65,14 +73,15 @@ def item():
 
 itemnum = 0
 class LoggedCommand:
-    def __init__(self, cmd, prefix=ID, filter_stdout=None):
+    def __init__(self, cmd, prefix=ID, filter_stdout=None, only_count=False):
         self.command = cmd
         self.has_run = False
-        self.stdout = None
-        self.stderr = None
+        self.output = None
+        self.err_output = None
         self.filter_stdout = filter_stdout
         self.logfile = None
         self.prefix = prefix
+        self.only_count = only_count
 
     def log_name(self):
         fname = filter_fname(" ".join(self.command))
@@ -86,15 +95,24 @@ class LoggedCommand:
         self.logfile.write("Command: %s\n" % (" ".join(self.command), ))
         self.logfile.write("=" * 79)
         self.logfile.write("\nSTDOUT:\n")
-        self.logfile.write("".join(filter(self.filter_stdout, self.stdout.readlines())))
+        self.logfile.write(self.output)
         self.logfile.write("\nSTDERR:\n")
-        self.logfile.write(self.stderr.read())
+        self.logfile.write(self.err_output)
         return self.logfile
 
     def run(self):
-        p = Popen(self.command, stdout=PIPE, stderr=PIPE)
-        self.stdout = p.stdout
-        self.stderr = p.stderr
+        try:
+            p = Popen(self.command, stdout=PIPE, stderr=PIPE)
+        except OSError, e:
+            # program is not installed, cannot be found in $PATH, etc.
+            self.output = ""
+            self.err_output = str(e)
+        else:
+            stdoutlines = filter(self.filter_stdout, self.stdout.readlines())
+            if self.only_count:
+                stdoutlines = [str(len(stdoutlines))]
+            self.output = "".join(stdoutlines)
+            self.err_output = p.stderr.read()
 
     def __call__(self, tar = None):
         self.run()
@@ -141,11 +159,13 @@ for cmd in simplecommands:
     print "Running %s" % (" ".join(cmd))
     LoggedCommand(cmd)(tar)
 
+for (cmd, filter_stdout, only_count) in filteredcommands:
+    print "Running filtered %s %s" % (" ".join(cmd), filter_stdout)
+    LoggedCommand(cmd, filter_stdout=filter_stdout, only_count=only_count)(tar)
+
 print "Including files"
 for f in fileincludes:
     FileInclude(f)(tar)
-
-LoggedCommand(["ps", "aux"], filter_stdout=lambda x: re.search(r'(varnish|apache|mysql|nginx|httpd|stud|stunnel)', x))(tar)
 
 tar.close()
 
@@ -153,16 +173,8 @@ print "=" * 79
 print "Please submit the file:\n%s" % (tar.name,)
 print "=" * 79
 
-
-
-#runpipe "rpm -qa" "grep varnish"
-#runpipe "ps aux" "egrep "
-#runpipe "netstat -np" "wc -l"
-#runpipe "netstat -np" "grep ESTABLISHED" "wc -l"
-#runpipe "rpm -qa" "grep varnish"
 #run varnishstat -1 $STATCMD
 
-#run iptables -n -L
 
 #for a in $(findvcls); do
 #	mycat $a
