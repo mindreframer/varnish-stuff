@@ -7,7 +7,7 @@ Varnish ipcast Module
 ----------------------
 
 :Author: Lasse Karstensen
-:Date: 2013-07-17
+:Date: 2013-10-05
 :Version: 1.0
 :Manual section: 3
 
@@ -58,6 +58,8 @@ using the varnishtest tool.
 
 Usage::
 
+ # only if you are building from a git clone.
+ ./autogen.sh 
  ./configure VARNISHSRC=DIR [VMODDIR=DIR]
 
 `VARNISHSRC` is the directory of the Varnish source tree for which to

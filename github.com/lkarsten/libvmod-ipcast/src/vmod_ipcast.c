@@ -18,6 +18,9 @@ int vmod_clientip(struct sess *sp, const char *ipstring) {
 	struct addrinfo *rp;
 	int s;
 
+	AN(sp);
+	AN(ipstring);
+
 	memset(&hints, 0, sizeof(struct addrinfo));
 	hints.ai_family = AF_UNSPEC;
 
@@ -31,9 +34,10 @@ int vmod_clientip(struct sess *sp, const char *ipstring) {
 		VSL(SLT_VCL_Log, 0, "ipcast: getaddrinfo(): %s", gai_strerror(s));
 		return(s);
 	}
+	AN(rp);
 
 	sp->sockaddrlen = rp->ai_addrlen;
-	memcpy(sp->sockaddr, rp->ai_addr, sizeof(struct sockaddr_storage));
+	memcpy(sp->sockaddr, rp->ai_addr, rp->ai_addrlen);
 
 	freeaddrinfo(rp);
 	return(0);
