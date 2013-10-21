@@ -1,16 +1,22 @@
 # Construct a backend for each container's IP
-<% etcd_response.each_with_index do |domain, index| %>
-  <% domain["value"].delete("[]").split(",").each_with_index do |ip_address, number|  %>
-backend <%= domain["key"].split('/')[-1] + number.to_s  %> {
-    .host = "<%= ip_address.delete('"').split(":")[0] %>";
-    .port = "<%= ip_address.delete('"').split(":")[1] %>";
+<% domains_with_default.each_pair do |domain, hostnames| %>
+ <% hostnames.each_with_index do | hostname, index | %>
+backend <%= domain.tr(".", "") + index.to_s %> {
+  .host = "<%= hostname["hostname"] %>";
+  .port = "<%= hostname["port"] %>";
+  .probe = {
+    .url = "/";
+    .interval = 30s;
+    .timeout = 10s;
+    .window= 5;
+    .threshold = 2;
+  }
 }
   <% end %>
-
-director <%= domain["key"].split('/')[-1] %> round-robin {
-  <% domain["value"].delete("[]").split(",").each_with_index do |ip_address, number|  %>
+director <%= domain.tr(".", "") + "_backend" %> round-robin {
+  <% hostnames.each_with_index do | hostname, index | %>
   {
-    .backend = <%= domain["key"].split('/')[-1] + number.to_s %>;
+    .backend = <%= domain.tr(".", "") + index.to_s %>;
   }
   <% end %>
 }
@@ -18,10 +24,23 @@ director <%= domain["key"].split('/')[-1] %> round-robin {
 
 # Respond to incoming requests and route accordingly
 sub vcl_recv {
-  <% etcd_response.each_with_index do |domain, index| %>
-  if (req.http.host == "<%= domain["key"].split('/')[-1] %>") {
-        set req.backend = <%= domain["key"].split('/')[-1] %>;
-        return (lookup);
-  }
+<% domains.each_with_index do |(domain, hostnames), index| %>
+  <% if index == 0 %>
+  if(req.http.host == "<%= domain %>") {
+    set req.backend = <%= domain.tr(".", "") + "_backend" %>;
+  <% else %>
+  } else if(req.http.host == "<%= domain %>") {
+    set req.backend = <%= domain.tr(".", "") + "_backend" %>;
   <% end %>
+<% end %>
+  <% if (domains_with_default.has_key?("default")) %>
+  } else {
+    set req.backend = default_backend;
+  <% end %>
+  }
+}
+
+# Output backend container serving the request
+sub vcl_fetch {
+    set beresp.http.X-Backend = beresp.backend.name;
 }
