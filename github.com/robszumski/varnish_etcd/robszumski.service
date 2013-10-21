@@ -1,0 +1,12 @@
+[Unit]
+Description=robszumski
+After=docker.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker run -p 8082:80 index.robszumski.com/robszumski /bin/sh /root/boot-apache.sh
+ExecStartPost=/usr/bin/etcdctl set /domains/robszumski.com/%H:8082 running
+ExecStop=/usr/bin/etcdctl delete /domains/robszumski.com/%H:8082
+
+[Install]
+WantedBy=local.target

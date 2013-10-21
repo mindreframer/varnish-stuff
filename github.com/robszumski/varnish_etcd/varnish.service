@@ -1,0 +1,10 @@
+[Unit]
+Description=Varnish
+After=docker.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker run -p 80:80 index.robszumski.com/varnish /bin/sh /root/boot-varnish.sh
+
+[Install]
+WantedBy=local.target
