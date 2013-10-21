@@ -1,4 +1,4 @@
-#! /usr/bin/ruby
+#! /usr/bin/env ruby
 
 #
 # Copyright 2012 Varnish Software AS
@@ -119,7 +119,7 @@ module VarnishAgent
         "sessions"
         when /^s_(req|pipe|pass|fetch)/
         "requests"
-        when /bytes$/
+        when /(bytes|balloc)$/
         "bytes"
         when /g_space$/
         "bytes"
