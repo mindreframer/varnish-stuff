@@ -1,0 +1,31 @@
+varnishtest "Test command_string"
+
+server s1 {
+	rxreq
+	txresp
+} -start
+
+varnish v1 -vcl+backend {
+	import redis from "${vmod_topbuild}/src/.libs/libvmod_redis.so";
+
+	sub vcl_init {
+		redis.connect("127.0.0.1", 6379);
+	}
+
+	sub vcl_deliver {
+		redis.command_void("SET foo %s" + req.http.payload);
+		set resp.http.redis = redis.command_string("GET foo");
+	}
+
+	sub vcl_fini {
+		redis.disconnect();
+	}
+} -start
+
+client c1 {
+	txreq -url "/" -hdr "payload: hello"
+	rxresp
+	expect resp.http.redis == "hello"
+}
+
+client c1 -run
