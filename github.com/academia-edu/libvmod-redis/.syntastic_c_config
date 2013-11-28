@@ -1,0 +1,11 @@
+-I.
+-Isrc
+-I/home/russ/Sources/academia/varnish-3.0.4/include
+-I/home/russ/Sources/academia/varnish-3.0.4
+-I/usr/include/glib-2.0
+-I/usr/lib64/glib-2.0/include
+-pedantic
+-Wall
+-Wextra
+-Werror
+-std=c99

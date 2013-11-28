@@ -1,0 +1,10 @@
+Module redis
+Init vmod_redis_init
+
+Function VOID connect(PRIV_VCL, STRING, INT)
+Function VOID disconnect(PRIV_VCL)
+
+Function VOID command_void(PRIV_VCL, STRING_LIST)
+
+Function INT command_int(PRIV_VCL, STRING_LIST)
+Function STRING command_string(PRIV_VCL, STRING_LIST)
