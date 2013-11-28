@@ -20,3 +20,6 @@ default['varnish']['VARNISH_STORAGE_FILE'] = "/var/lib/varnish/varnish_storage.b
 default['varnish']['VARNISH_STORAGE_SIZE'] = "1G"
 default['varnish']['VARNISH_STORAGE'] = "malloc" # file | malloc | persistent
 default['varnish']['VARNISH_TTL'] = 120
+default['varnish']['VARNISH_WORKING_DIR'] = ''
+default['varnish']['GeoIP_enabled'] = false
+default['varnish']['release_rpm'] = 'http://repo.varnish-cache.org/redhat/varnish-3.0/el5/noarch/varnish-release/varnish-release-3.0-1.noarch.rpm'
