@@ -126,9 +126,19 @@ class Made_Cache_Model_Observer_Catalog
 
         $_toolbar->setCollection($productCollection);
 
+        $productIds = array();
         foreach ($productCollection as $_product) {
             $tags[] = Mage_Catalog_Model_Product::CACHE_TAG."_".$_product->getId();
+            $productIds[] = $_product->getId();
         }
+        
+        if (!empty($productIds)) {
+            $childIds = Mage::helper('cache')->getChildProductIds($productIds);
+            foreach ($childIds as $childId) {
+                $tags[] = Mage_Catalog_Model_Product::CACHE_TAG . '_' . $childId;
+            }
+        }
+        
         $block->setData('cache_tags', $tags);
 
         // Set cache key
@@ -158,6 +168,27 @@ class Made_Cache_Model_Observer_Catalog
             Mage::registry('current_tag')
         ));
         $block->setData('cache_key', $this->_getCacheKey($keys, $block));
+    }
+
+    /**
+     * Search result cache, caches the child product list block
+     *
+     * @param Mage_CatalogSearch_Block_Advanced_Result $block
+     */
+    public function applySearchResult(Mage_CatalogSearch_Block_Advanced_Result $block)
+    {
+        // The "messages" block is session-dependent, don't cache
+        if (Mage::helper('cache')->responseHasMessages()) {
+            $block->setData('cache_lifetime', null);
+            return;
+        }
+
+        // We cache the product list child, not the result block itself
+        $block->setCacheLifetime(null);
+
+        // The toolbar needs to apply sort order etc
+        $productListBlock = $block->getChild('search_result_list');
+        $this->applyProductList($productListBlock);
     }
 
     /**

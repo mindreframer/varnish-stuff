@@ -82,16 +82,19 @@ sub vcl_recv {
         set req.http.X-Session-UUID =
             regsub(req.http.Cookie, ".*frontend=([^;]+).*", "\1");
 
-        # This is where we have to check for session validity. Needs the curl vmod
-        # to be installed and imported at the top of this file. If the session is
-        # invalid we pass the user to the backend. Your CouchDB URL has to be
-        # defined manually here, in the form:
+        # If you use CouchDB sessions you can include this snippet for instance
+        # session validation. The pro is that we know exactly who's allowed to
+        # see the backend or not and that it's not browser dependent. The con is
+        # that you needa configured CouchDB server set up to handle your
+        # sessions, using this module
+        #
+        #   https://github.com/madepeople/Made_CouchdbSession
+        #
+        # You need the cURL vmod to be installed and imported at the top of this
+        # file. If the session is invalid we pass the user to the backend. Your
+        # CouchDB URL has to be defined manually here, in the form:
         #
         #   http://couchdb.url.or.ip:port/magento_session/_design/misc/_show/is_session_valid/SESSION_ID_FROM_REQUEST
-        #
-        # The following show function needs to be defined in CouchDB as well:
-        #
-        #   https://gist.github.com/jonathanselander/1c71f413911116ecba11
         #
         #if (!(req.url ~ "\.(css|js|jpg|png|gif|gz|tgz|bz2|tbz|mp3|ogg|swf|flv)$") &&
         #        !(req.url ~ "/madecache/varnish/(esi|messages)")) {
@@ -140,6 +143,10 @@ sub vcl_hash {
         }
     } else {
         hash_data(req.url);
+    }
+
+    if (req.http.X-Magento-Store && req.http.X-Magento-Store != "") {
+        hash_data(req.http.X-Magento-Store);
     }
 
     # Also consider the host name for caching (multi-site with different themes etc)
@@ -209,6 +216,8 @@ sub vcl_fetch {
 sub vcl_deliver {
     # To debug if it's a hit or a miss
     set resp.http.Cache-Control = "no-store, no-cache, must-revalidate, post-check=0, pre-check=0";
+    unset resp.http.X-Magento-Store;
+    unset resp.http.X-Session-UUID;
 
     if (req.http.tempCookie) {
         # Version of https://www.varnish-cache.org/trac/wiki/VCLExampleLongerCaching
