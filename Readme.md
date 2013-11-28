@@ -115,6 +115,10 @@
       An example vmod for Varnish
        82 commits, last change: 2013-06-28 02:00:40, 13 stars, 42 forks
 
+    academia-edu/libvmod-redis:
+      Redis module for Varnish VCL
+       17 commits, last change: 2013-10-17 14:59:38, 0 stars, 0 forks
+
     allancrooks/vcl-cache-validation:
       VCL scripts for Varnish Cache to enforce cache content validation
        11 commits, last change: , 1 stars, 0 forks
