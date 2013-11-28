@@ -231,6 +231,10 @@
       Install Varnish from custom DEB package with plenty VMODs
        16 commits, last change: , 0 stars, 0 forks
 
+    mingfang/docker-varnish:
+
+       3 commits, last change: 2013-10-09 19:49:28, 0 stars, 1 forks
+
     mmb/vmod_dgram:
       Varnish VMOD to send data over UDP from VCL.
        14 commits, last change: , 4 stars, 0 forks
