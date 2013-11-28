@@ -1,3 +1,19 @@
+v0.5.3, 27/11/2013
+------------------
+
+  - Improved/updated infrastructure (setup.py, Puppet manifest, etc.).
+  - Blocked django-celery package version (3.0.23).
+
+v0.5.2, 25/11/2013
+------------------
+
+  - Updated Django dependency in setup.py in order to keep using 1.5.*.
+
+v0.5.1, 28/10/2013
+------------------
+
+  - Removed ALLOWED_HOSTS filtering.
+
 v0.5, 13/05/2013
 ----------------
 
