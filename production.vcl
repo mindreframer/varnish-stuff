@@ -4,7 +4,7 @@
 include "custom.backend.vcl";
 include "custom.acl.vcl";
 
-# Handle the HTTP request received by the client 
+# Handle the HTTP request received by the client
 sub vcl_recv {
     # shortcut for DFind requests
     if (req.url ~ "^/w00tw00t") {
@@ -47,8 +47,8 @@ sub vcl_recv {
         return (pipe);
     }
 
+    # Only cache GET or HEAD requests. This makes sure the POST requests are always passed.
     if (req.request != "GET" && req.request != "HEAD") {
-        # We only deal with GET and HEAD by default
         return (pass);
     }
 
@@ -127,11 +127,19 @@ sub vcl_recv {
         }
     }
 
+    # Large static files should be piped, so they are delivered directly to the end-user without
+    # waiting for Varnish to fully read the file first.
+    # TODO: once the Varnish Streaming branch merges with the master branch, use streaming here to avoid locking.
+    if (req.url ~ "^[^?]*\.(mp[34]|rar|tar|tgz|gz|wav|zip)(\?.*)?$") {
+        unset req.http.Cookie;
+        return (pipe);
+    }
+
     # Remove all cookies for static files
     # A valid discussion could be held on this line: do you really need to cache static files that don't cause load? Only if you have memory left.
     # Sure, there's disk I/O, but chances are your OS will already have these files in their buffers (thus memory).
     # Before you blindly enable this, have a read here: http://mattiasgeniar.be/2012/11/28/stop-caching-static-files/
-    if (req.url ~ "^[^?]*\.(bmp|bz2|css|doc|eot|flv|gif|gz|ico|jpeg|jpg|js|less|mp[34]|pdf|png|rar|rtf|swf|tar|tgz|txt|wav|woff|xml|zip)(\?.*)?$") {
+    if (req.url ~ "^[^?]*\.(bmp|bz2|css|doc|eot|flv|gif|gz|ico|jpeg|jpg|js|less|pdf|png|rtf|swf|txt|woff|xml)(\?.*)?$") {
         unset req.http.Cookie;
         return (lookup);
     }
@@ -139,13 +147,13 @@ sub vcl_recv {
     # Send Surrogate-Capability headers to announce ESI support to backend
     set req.http.Surrogate-Capability = "key=ESI/1.0";
 
-    # Include custom vcl_recv logic
-    include "custom.recv.vcl";
-
     if (req.http.Authorization) {
         # Not cacheable by default
         return (pass);
     }
+
+    # Include custom vcl_recv logic
+    include "custom.recv.vcl";
 
     return (lookup);
 }
@@ -204,7 +212,7 @@ sub vcl_miss {
     return (fetch);
 }
 
-# Handle the HTTP request coming from our backend 
+# Handle the HTTP request coming from our backend
 sub vcl_fetch {
     # Include custom vcl_fetch logic
     include "custom.fetch.vcl";
@@ -278,9 +286,6 @@ sub vcl_error {
     } elsif (obj.status >= 400 && obj.status <= 499 ) {
         # use 404 error page for 4xx error
         include "conf.d/error-404.vcl";
-    } elsif (obj.status <= 200 && obj.status >= 299 ) {
-        # for other errors (not 5xx, not 4xx and not 2xx)
-        include "conf.d/error.vcl";
     } elseif (obj.status == 720) {
         # We use this special error status 720 to force redirects with 301 (permanent) redirects
         # To use this, call the following from anywhere in vcl_recv: error 720 "http://host/new.html"
@@ -294,6 +299,7 @@ sub vcl_error {
         set obj.http.Location = obj.response;
         return (deliver);
     } else {
+        # for other errors (not 5xx, not 4xx and not 2xx)
         include "conf.d/error.vcl";
     }
 
