@@ -3,6 +3,11 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
+#ifdef __FreeBSD__
+#include <netinet/in.h>
+#include <stdio.h>
+#endif
+
 #include "vrt.h"
 #include "bin/varnishd/cache.h"
 
@@ -14,7 +19,7 @@
 
 int
 init_function(struct vmod_priv *priv, const struct VCL_conf *conf) {
-	return (0);
+    return (0);
 }
 
 const char *
@@ -45,7 +50,7 @@ vmod_resolve(struct sess *sp, const char *str) {
             return NULL;
     }
 
-	return s;
+    return s;
 }
 
 const char *
@@ -63,21 +68,23 @@ vmod_rresolve(struct sess *sp, const char *str) {
     }
 
     char *s;
-	unsigned u, v;
+    unsigned u, v;
 
     /* Reserve some work space */
-	u = WS_Reserve(sp->wrk->ws, 0);
+    u = WS_Reserve(sp->wrk->ws, 0);
 
     /* Front of workspace area */
-	s = sp->wrk->ws->f;
-	v = snprintf(s, u, "%s", node);
-	v++;
-	if (v > u) {
-		/* No space, reset and leave */
-		WS_Release(sp->wrk->ws, 0);
-		return NULL;
-	}
-	/* Update work space with what we've used */
-	WS_Release(sp->wrk->ws, v);
-	return s;
+    s = sp->wrk->ws->f;
+    v = snprintf(s, u, "%s", node);
+    v++;
+
+    if (v > u) {
+        /* No space, reset and leave */
+        WS_Release(sp->wrk->ws, 0);
+        return NULL;
+    }
+
+    /* Update work space with what we've used */
+    WS_Release(sp->wrk->ws, v);
+    return s;
 }
