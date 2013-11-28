@@ -7,20 +7,19 @@ Varnish Agent
 -------------
 
 :Manual section: 1
-:Authors: Kristian Lyngstøl, Yves Hwang
-:Date: 2013-02-06
-:Version: 2.2
+:Authors: Kristian Lyngstøl, Yves Hwang, Dag Haavi Finstad
+:Date: 2013-24-10
+:Version: 2.2.0
 
 SYNOPSIS
 ========
 
 ::
 
-        varnish-agent [-p directory] [-H directory] [-n name] [-c port]
-                      [-S file] [-T host:port] [-t timeout] [-h]
-                      [-P pidfile] [-V] [-u user] [-g group]
-                      [-z http://vac_register_url]
-                      [-K agentsecretfile] [-q] [-v]
+        varnish-agent -K agentsecretfile [-p directory] [-H directory]
+                      [-n name] [-c port] [-S file] [-T host:port]
+                      [-t timeout] [-h] [-P pidfile] [-V] [-u user]
+                      [-g group] [-z http://vac_register_url] [-q] [-v]
 
 DESCRIPTION
 ===========
@@ -156,8 +155,9 @@ from the beginning of the file running up to the "here"-marker. If
 while you'll get a truckload of feedback if you query the module right
 before ``varnishd`` wraps around.
 
-Oh, and also, you may want to add some firewall rules. In case you didn't
-notice, there is currently 0 authorization of requests.
+You may also want to add some SSL on top of it. The agent provides
+HTTP Basic authentication, but that is in no way secure as credentials
+are easy to extract to anyone listening in.
 
 For more, see http://github.com/varnish/vagent2
 
