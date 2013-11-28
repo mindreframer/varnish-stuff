@@ -155,6 +155,10 @@
       A suite of tools for testing varnish and configuring varnish cache.
        4 commits, last change: , 2 stars, 0 forks
 
+    fidion/mobile-detect-vcl:
+      VCL script (varnish-cache) for decting mobile clients
+       2 commits, last change: 2013-11-05 03:28:49, 0 stars, 0 forks
+
     flygoast/libvmod-lua:
       Varnish lua vmod to execute lua script in VCL.
        1 commits, last change: , 3 stars, 0 forks
