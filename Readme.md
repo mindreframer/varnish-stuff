@@ -195,6 +195,10 @@
       VMOD for Varnish Cache which adds time utilities.
        5 commits, last change: 2012-10-17 17:45:10, 5 stars, 1 forks
 
+    kataweb/libvmod-urlfilter:
+      This Varnish vmod sanitize STRING to get a canonical version. A canonical name does not contain any ".", ".." components nor "/".
+       5 commits, last change: 2013-09-27 07:26:14, 0 stars, 0 forks
+
     kenshaw/libvmod-dns:
       Varnish vmod DNS functions
        13 commits, last change: 2013-11-09 18:18:28, 3 stars, 0 forks
