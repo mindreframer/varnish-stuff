@@ -1,6 +1,10 @@
 # This is a basic VCL configuration file for varnish.  See the vcl(7)
 # man page for details on VCL syntax and semantics.
-# 
+
+<% if node['varnish']['GeoIP_enabled'] %>
+include "/etc/varnish/geoip.vcl";
+<% end %>
+
 # Default backend definition.  Set this to point to your content
 # server.
 # 
@@ -8,18 +12,25 @@ backend default {
   .host = "<%= @params[:VARNISH_BACKEND_ADDRESS] %>";
   .port = "<%= @params[:VARNISH_BACKEND_PORT] %>";
 }
-# 
+
 # Below is a commented-out copy of the default VCL logic.  If you
 # redefine any of these subroutines, the built-in logic will be
 # appended to your code.
 # sub vcl_recv {
 #     if (req.restarts == 0) {
-# 	if (req.http.x-forwarded-for) {
-# 	    set req.http.X-Forwarded-For =
-# 		req.http.X-Forwarded-For + ", " + client.ip;
-# 	} else {
-# 	    set req.http.X-Forwarded-For = client.ip;
-# 	}
+#         if (req.http.x-forwarded-for) {
+#             set req.http.X-Forwarded-For =
+#             req.http.X-Forwarded-For + ", " + client.ip;
+#         } else {
+#             set req.http.X-Forwarded-For = client.ip;
+#         }
+#         <% if node['varnish']['GeoIP_enabled'] %>
+#         if (req.url !~ "\.(jpeg|jpg|png|gif|ico|swf|js|css|gz|rar|txt|bzip|pdf)(\?.*|)$") {
+#             C{
+#                 vcl_geoip_country_set_header(sp);
+#             }C
+#         }
+#         <% end %>
 #     }
 #     if (req.request != "GET" &&
 #       req.request != "HEAD" &&
@@ -63,6 +74,9 @@ backend default {
 #     } else {
 #         hash_data(server.ip);
 #     }
+#     <% if node['varnish']['GeoIP_enabled'] %>
+#     hash_data(req.http.X-Geo-IP-Country);
+#     <% end %>
 #     return (hash);
 # }
 # 

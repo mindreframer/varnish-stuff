@@ -104,6 +104,12 @@ DAEMON_OPTS="-a ${VARNISH_LISTEN_ADDRESS}:${VARNISH_LISTEN_PORT} \
              -w ${VARNISH_MIN_THREADS},${VARNISH_MAX_THREADS},${VARNISH_THREAD_TIMEOUT} \
              -u varnish -g varnish \
              -S ${VARNISH_SECRET_FILE} \
+             <% if @params[:VARNISH_WORKING_DIR].to_s != '' %>
+                 -n <%= @params[:VARNISH_WORKING_DIR] %> \
+             <% end %>
+             <% if node['varnish']['GeoIP_enabled'] %>
+                 -p 'cc_command=exec cc -fpic -shared -Wl,-x -L/usr/local/lib -lGeoIP -o %o %s' \
+             <% end %>
              -s ${VARNISH_STORAGE}"
 #
 

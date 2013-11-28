@@ -18,18 +18,16 @@
 #
 
 
-if platform?("redhat", "centos", "fedora", "amazon", "scientific")
-  bash "varnish-cache.org" do
-    user "root"
-    code <<-EOH
-      rpm -q varnish || rpm --nosignature -i #{node['varnish']['release_rpm']}
-    EOH
-  end
-  ruby_block "Flush yum cache" do
-    block do
-      Chef::Provider::Package::Yum::YumCache.instance.reload
-    end
-  end
+bash "varnish-cache.org" do
+  user "root"
+  code <<-EOH
+<<<<<<< HEAD
+    rpm -q varnish || rpm --nosignature -i http://repo.varnish-cache.org/redhat/varnish-3.0/el5/noarch/varnish-release/varnish-release-3.0-1.noarch.rpm
+=======
+    rpm -q varnish || rpm --nosignature -i #{node['varnish']['release_rpm']}
+>>>>>>> 938fa2862820ae1aa787d92ac7b147be90cb819e
+  EOH
+  only_if {platform?("redhat", "centos", "fedora", "amazon", "scientific")}
 end
 
 if platform?("ubuntu", "debian")
@@ -92,4 +90,3 @@ service "varnishlog" do
   supports :restart => true, :reload => true
   action [ :enable, :start ]
 end
-
