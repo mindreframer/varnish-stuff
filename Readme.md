@@ -227,6 +227,10 @@
       Varnish VMOD to send data over UDP from VCL.
        14 commits, last change: 2013-06-16 01:51:09, 4 stars, 0 forks
 
+    MWers/prerender-varnish:
+      prerender-varnish is a Varnish configuration for serving pre-rendered HTML from Javascript pages/apps using prerender.io.
+       17 commits, last change: 2013-11-11 09:38:15, 1 stars, 0 forks
+
     nand2/libvmod-throttle:
       Varnish: Reject or delay requests after given tresholds are reached. (Think API rate limit, or per-ip MISS rate limit)
        59 commits, last change: 2013-08-26 04:55:50, 31 stars, 8 forks
