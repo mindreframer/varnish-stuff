@@ -1,5 +1,8 @@
 # New Relic Varnish Extension
 
+This runs on the Varnish server and reports the values from
+varnishstat back into New Relic.
+
 ## Instructions for running the Varnish extension agent
 
 1. Go to [the tags list](https://github.com/varnish/newrelic_varnish_plugin/tags) and find the latest tar.gz
