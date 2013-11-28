@@ -19,6 +19,7 @@ https://github.com/jcihocki/varnishd-skillshare.git
 https://github.com/jib/libvmod-statsd.git
 https://github.com/jib/libvmod-timers.git
 https://github.com/jthomerson/libvmod-timeutils.git
+https://github.com/kataweb/libvmod-urlfilter.git
 https://github.com/kenshaw/libvmod-dns.git
 https://github.com/lkarsten/libvmod-cookie.git
 https://github.com/lkarsten/libvmod-ipcast.git
@@ -52,4 +53,3 @@ https://github.com/xcir/libvmod-backendutils.git
 https://github.com/xcir/libvmod-ldap.git
 https://github.com/xcir/libvmod-parsereq.git
 https://github.com/xcir/vsltrans.git
-https://github.com/kataweb/libvmod-urlfilter.git
