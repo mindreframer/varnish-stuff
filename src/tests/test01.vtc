@@ -1,0 +1,28 @@
+varnishtest "Test urlfilter vmod"
+
+server s1 {
+       rxreq
+       txresp
+} -start
+
+varnish v1 -vcl+backend {
+	import urlfilter from "${vmod_topbuild}/src/.libs/libvmod_urlfilter.so";
+
+	sub vcl_recv {
+                set req.url = urlfilter.canonicalize(req.url);
+                error 666 req.http.host+req.url;
+	}
+      
+        sub vcl_error {
+                if (obj.status == 666) {
+                     set obj.http.newurl = obj.response;
+                }
+       }
+
+} -start
+
+client c1 {
+	txreq -url "/.../one///two//three///four../five/../..//six/../../seven"
+	rxresp
+	expect resp.http.newurl == "/.../one/two/seven"
+} -run
