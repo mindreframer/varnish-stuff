@@ -46,9 +46,12 @@
 "android 2.3";android23;B;;
 "android 3.1";android31;B;;
 "android 3.2";android32;B;;
+"android 4";android4;B;;
 "android 4.0";android40;B;;
 "android 4.1";android41;B;;
 "android 4.2";android42;B;;
+"android 4.3";android43;B;;
+"android 4.4";android44;B;;
 "android 5";android50;B;;
 "android 6";android60;B;;
 "android";android0;B;;
@@ -59,9 +62,12 @@
 "applewebkit";webkit23;C;android23;browser=WebKit,version=2300,os=Android
 "applewebkit";webkit31;C;android31;browser=WebKit,version=3100,os=Android
 "applewebkit";webkit32;C;android32;browser=WebKit,version=3200,os=Android
+"applewebkit";webkit4;C;android4;browser=WebKit,version=4000,os=Android
 "applewebkit";webkit40;C;android40;browser=WebKit,version=4000,os=Android
 "applewebkit";webkit41;C;android41;browser=WebKit,version=4100,os=Android
 "applewebkit";webkit42;C;android42;browser=WebKit,version=4200,os=Android
+"applewebkit";webkit43;C;android43;browser=WebKit,version=4300,os=Android
+"applewebkit";webkit44;C;android44;browser=WebKit,version=4400,os=Android
 "applewebkit";webkit50;C;android50;browser=WebKit,version=5000,os=Android
 "applewebkit";webkit60;C;android60;browser=WebKit,version=6000,os=Android
 "applewebkit";android;C;android0;browser=WebKit,version=0,os=Android
@@ -103,9 +109,13 @@
 "msie 8";msie8;W;;browser="Internet Explorer",version=8000,os=Windows
 "msie 9";msie9;W;;browser="Internet Explorer",version=9000,os=Windows
 "msie 10";msie10;W;;browser="Internet Explorer",version=10000,os=Windows
-"msie 11";msie10;W;;browser="Internet Explorer",version=11000,os=Windows
-"ie 11";ie10;W;;browser="Internet Explorer",version=11000,os=Windows
+"msie 11";msie11;W;;browser="Internet Explorer",version=11000,os=Windows
+"ie 11";ie11;W;;browser="Internet Explorer",version=11000,os=Windows
 "msie";msie;N;;browser="Internet Explorer",version=0,os=Windows
+"trident";msiet;N;;browser="Internet Explorer",version=0,os=Windows
+"trident";wtrident;B;windows;
+"rv:11";msiet11;C;wtrident;browser="Internet Explorer",version=11000,os=Windows
+"rv:12";msiet12;C;wtrident;browser="Internet Explorer",version=12000,os=Windows
 
 #chrome
 "chrome/10";chrome10l;C;x11;browser=Chrome,version=10000,os=Linux
@@ -355,5 +365,7 @@
 "version/5";safari5m;C;safarim;browser=Safari,version=5000,os=Macintosh
 "version/6";safari6w;C;safariw;browser=Safari,version=6000,os=Windows
 "version/6";safari6m;C;safarim;browser=Safari,version=6000,os=Macintosh
-"version/7";safari7w;C;safari;browser=Safari,version=7000,os=Windows
-"version/7";safari7m;C;safari;browser=Safari,version=7000,os=Macintosh
+"version/7";safari7w;C;safariw;browser=Safari,version=7000,os=Windows
+"version/7";safari7m;C;safarim;browser=Safari,version=7000,os=Macintosh
+"version/8";safari8w;C;safariw;browser=Safari,version=8000,os=Windows
+"version/8";safari8m;C;safarim;browser=Safari,version=8000,os=Macintosh
