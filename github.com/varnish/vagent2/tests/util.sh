@@ -131,8 +131,8 @@ start_agent() {
 	AGENT_PORT=$(( 1024 + ( $RANDOM % 48000 ) ))
 	echo -e "\tAgent port: $AGENT_PORT"
 	ARGS="$ARGS -K ${TMPDIR}/agent-secret"
-	echo -e "\tAgent arguments:  ${N_ARG} -p ${TMPDIR}/vcl/ -P ${TMPDIR}/agent.pid -c $AGENT_PORT ${ARGS}"
-	$ORIGPWD/../src/varnish-agent ${N_ARG} -p ${TMPDIR}/vcl/ -P ${TMPDIR}/agent.pid -c "$AGENT_PORT" ${ARGS}
+	echo -e "\tAgent arguments: -n ${TMPDIR} -p ${TMPDIR}/vcl/ -P ${TMPDIR}/agent.pid -c $AGENT_PORT ${ARGS}"
+	$ORIGPWD/../src/varnish-agent -n ${TMPDIR} -p ${TMPDIR}/vcl/ -P ${TMPDIR}/agent.pid -c "$AGENT_PORT" ${ARGS}
 
 	pidwait agent
 }
@@ -162,6 +162,14 @@ test_it_no_content() {
 test_it_fail() {
 	FOO=$(lwp-request -m $1 http://${PASS}@localhost:${AGENT_PORT}/$2 <<<"$3")
 	if [ "x$?" != "x0" ]; then pass; else fail "$*: $FOO"; fi
+	inc
+	if [ "x$FOO" = "x$4" ]; then pass; else fail "$*: $FOO"; fi
+	inc
+}
+
+test_it_first_line_fail() {
+	FOO=$( (lwp-request -m $1 http://${PASS}@localhost:${AGENT_PORT}/$2 <<<"$3"; rc=$?) | head -1)
+	if [ "x$rc" != "x0" ]; then pass; else fail "$*: $FOO"; fi
 	inc
 	if [ "x$FOO" = "x$4" ]; then pass; else fail "$*: $FOO"; fi
 	inc
