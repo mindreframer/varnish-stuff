@@ -207,6 +207,10 @@
       Varnish vmod DNS functions
        13 commits, last change: 2013-11-09 18:18:28, 3 stars, 0 forks
 
+    liip/LiipCacheControlBundle:
+      Symfony2 Bundle that provides a way to set path based cache expiration headers via the app configuration
+       133 commits, last change: 2013-11-25 02:52:43, 83 stars, 21 forks
+
     lkarsten/libvmod-cookie:
       A varnish vmod for simpler use of the cookie header
        75 commits, last change: 2013-11-06 05:52:14, 16 stars, 3 forks
