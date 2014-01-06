@@ -89,6 +89,7 @@
 
 
 ## User Groups
+  - https://www.varnish-cache.org/vug8/
   - https://www.varnish-cache.org/vug7/
   - https://www.varnish-cache.org/vug6/
   - https://www.varnish-cache.org/vug5/
