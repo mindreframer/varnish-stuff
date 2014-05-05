@@ -115,11 +115,11 @@
 
     3scale/libvmod-3scale:
       An example vmod for Varnish
-       82 commits, last change: 2013-06-28 02:00:40, 13 stars, 42 forks
+       82 commits, last change: , 15 stars, 58 forks
 
     academia-edu/libvmod-redis:
       Redis module for Varnish VCL
-       17 commits, last change: 2013-10-17 14:59:38, 0 stars, 0 forks
+       17 commits, last change: , 2 stars, 0 forks
 
     allancrooks/vcl-cache-validation:
       VCL scripts for Varnish Cache to enforce cache content validation
@@ -127,7 +127,7 @@
 
     andreacampi/varnish-rb:
       varnish-rb provides a bridge between Ruby and Varnish 3
-       32 commits, last change: 2013-03-29 14:54:19, 10 stars, 3 forks
+       32 commits, last change: , 12 stars, 3 forks
 
     atdt/xvo:
       X-Vary-Options for Varnish
@@ -135,27 +135,27 @@
 
     camptocamp/puppet-varnish:
 
-       85 commits, last change: , 39 stars, 27 forks
+       89 commits, last change: , 39 stars, 27 forks
 
     comotion/VSF:
       Varnish Security Firewall
-       15 commits, last change: 2013-11-18 01:34:07, 26 stars, 11 forks
+       15 commits, last change: , 43 stars, 16 forks
 
     csfrancis/libvmod-redis:
       An example vmod for Varnish
-       39 commits, last change: , 1 stars, 42 forks
+       39 commits, last change: , 1 stars, 58 forks
 
     dot2code/varnish-bans-manager:
       Varnish Bans Manager (VBM) is a simple server and web UI designed to ease management of bans in complex Varnish deployments
-       176 commits, last change: 2013-11-27 07:16:25, 21 stars, 2 forks
+       176 commits, last change: , 32 stars, 4 forks
 
     dreamhost/varnish-vcl-collection:
       Collection of Varnish VCL files
-       5 commits, last change: 2013-09-05 17:50:13, 13 stars, 1 forks
+       5 commits, last change: , 25 stars, 6 forks
 
     Dridi/libvmod-querystring:
       A general-purpose querystring manipulation module for Varnish
-       41 commits, last change: 2013-10-12 15:17:33, 15 stars, 5 forks
+       45 commits, last change: , 22 stars, 8 forks
 
     drsnyder/varnish-testbed:
       A suite of tools for testing varnish and configuring varnish cache.
@@ -163,15 +163,15 @@
 
     fidion/mobile-detect-vcl:
       VCL script (varnish-cache) for decting mobile clients
-       2 commits, last change: 2013-11-05 03:28:49, 0 stars, 0 forks
+       2 commits, last change: , 0 stars, 0 forks
 
     flygoast/libvmod-lua:
       Varnish lua vmod to execute lua script in VCL.
-       1 commits, last change: , 3 stars, 0 forks
+       1 commits, last change: , 4 stars, 0 forks
 
     Fotolia/varnishops:
       a CLI realtime varnish traffic analyzer
-       18 commits, last change: , 12 stars, 3 forks
+       18 commits, last change: , 14 stars, 3 forks
 
     hellvinz/purger:
       client to purgerd. Send bans to varnish from ruby
@@ -183,7 +183,7 @@
 
     inviqa/chef-varnish:
       Chef cookbook that configures the varnish-cache.org repos for apt or yum and installs and configures Varnish 3.* based on the defined attributes.
-       53 commits, last change: , 7 stars, 13 forks
+       55 commits, last change: , 9 stars, 17 forks
 
     jcihocki/varnishd-skillshare:
       Accompanying test app with stepped branches for my varnishd skillshare class
@@ -191,35 +191,35 @@
 
     jib/libvmod-statsd:
       Varnish module to send statistics to statsd
-       39 commits, last change: 2013-10-23 14:45:05, 26 stars, 5 forks
+       41 commits, last change: , 35 stars, 6 forks
 
     jib/libvmod-timers:
       Access to various timers in Varnish
-       27 commits, last change: , 9 stars, 2 forks
+       27 commits, last change: , 13 stars, 2 forks
 
     jthomerson/libvmod-timeutils:
       VMOD for Varnish Cache which adds time utilities.
-       5 commits, last change: 2012-10-17 17:45:10, 5 stars, 1 forks
+       5 commits, last change: , 5 stars, 1 forks
 
     kataweb/libvmod-urlfilter:
       This Varnish vmod sanitize STRING to get a canonical version. A canonical name does not contain any ".", ".." components nor "/".
-       5 commits, last change: 2013-09-27 07:26:14, 0 stars, 0 forks
+       5 commits, last change: , 1 stars, 0 forks
 
     kenshaw/libvmod-dns:
       Varnish vmod DNS functions
-       13 commits, last change: 2013-11-09 18:18:28, 3 stars, 0 forks
+       15 commits, last change: , 3 stars, 0 forks
 
     liip/LiipCacheControlBundle:
       Symfony2 Bundle that provides a way to set path based cache expiration headers via the app configuration
-       133 commits, last change: 2013-11-25 02:52:43, 83 stars, 21 forks
+       139 commits, last change: , 104 stars, 21 forks
 
     lkarsten/libvmod-cookie:
       A varnish vmod for simpler use of the cookie header
-       75 commits, last change: 2013-11-06 05:52:14, 16 stars, 3 forks
+       91 commits, last change: , 20 stars, 10 forks
 
     lkarsten/libvmod-ipcast:
       libvmod-ipcast
-       53 commits, last change: 2011-02-09 07:18:35, 8 stars, 2 forks
+       59 commits, last change: , 11 stars, 4 forks
 
     luctus/chef-varnish-dashboard:
       A chef recipe for the amazing Varnish Agent Dashboard (A real time Varnish Cache metrics dashboard)
@@ -227,23 +227,23 @@
 
     madepeople/Made_Cache:
       Advanced Block Cache module for Magento that supports Varnish + ESI
-       63 commits, last change: 2013-11-21 05:08:41, 24 stars, 9 forks
+       92 commits, last change: , 33 stars, 9 forks
 
     mattiasgeniar/varnish-3.0-configuration-templates:
       Configuration templates used for Varnish 3.0 implementations
-       107 commits, last change: 2013-11-25 14:07:49, 173 stars, 39 forks
+       111 commits, last change: , 222 stars, 53 forks
 
     metabrainz/3scale-vcl:
       A draft Varnish configuration to talk to 3scale
-       1 commits, last change: 2012-03-13 11:22:27, 0 stars, 0 forks
+       1 commits, last change: , 0 stars, 0 forks
 
     mindreframer/vagrant-varnish-vmods-builder:
       Install Varnish from custom DEB package with plenty VMODs
-       16 commits, last change: , 0 stars, 0 forks
+       16 commits, last change: , 1 stars, 0 forks
 
     mingfang/docker-varnish:
 
-       3 commits, last change: 2013-10-09 19:49:28, 0 stars, 1 forks
+       3 commits, last change: , 2 stars, 1 forks
 
     mmb/vmod_dgram:
       Varnish VMOD to send data over UDP from VCL.
@@ -251,15 +251,15 @@
 
     MWers/prerender-varnish:
       prerender-varnish is a Varnish configuration for serving pre-rendered HTML from Javascript pages/apps using prerender.io.
-       17 commits, last change: 2013-11-11 09:38:15, 1 stars, 0 forks
+       17 commits, last change: , 4 stars, 0 forks
 
     nand2/libvmod-throttle:
       Varnish: Reject or delay requests after given tresholds are reached. (Think API rate limit, or per-ip MISS rate limit)
-       66 commits, last change: 2013-11-23 06:30:29, 33 stars, 9 forks
+       72 commits, last change: , 44 stars, 13 forks
 
     observing/balancerbattle:
       WebSocket loadbalancer battle
-       53 commits, last change: 2013-05-24 01:27:01, 273 stars, 15 forks
+       56 commits, last change: , 342 stars, 24 forks
 
     pad92/varnish:
       Varnish minimal configuration (use builtin for best performances)
@@ -267,63 +267,63 @@
 
     pbruna/Varnish-Agent-Dashboard:
       Real time Varnish Cache metrics dashboard
-       132 commits, last change: 2013-04-29 08:06:41, 114 stars, 9 forks
+       132 commits, last change: , 121 stars, 14 forks
 
     robmiller/varnisher:
       A library and command-line tool, written in Ruby, for working with the Varnish HTTP cache
-       111 commits, last change: 2013-09-27 09:59:51, 19 stars, 1 forks
+       111 commits, last change: , 25 stars, 1 forks
 
     robszumski/varnish_etcd:
       Dynamically apply Varnish VCL based on data from etcd
-       13 commits, last change: , 2 stars, 0 forks
+       13 commits, last change: , 7 stars, 0 forks
 
     samlbits/puppet-varnish:
       A varnish module for the samlbits.net CDN
-       50 commits, last change: , 0 stars, 0 forks
+       51 commits, last change: , 0 stars, 0 forks
 
     Sharecare/libvmod-uuid:
       Varnish vmod for creating a uuid
-       6 commits, last change: , 1 stars, 0 forks
+       6 commits, last change: , 3 stars, 0 forks
 
     TheWeatherChannel/dClass:
       Device Classification Engine
-       148 commits, last change: 2013-11-20 19:30:43, 36 stars, 11 forks
+       154 commits, last change: , 42 stars, 12 forks
 
     ThijsFeryn/varnishtraining:
       Vagrant box including VCL's  examples for my Varnish training
-       14 commits, last change: , 8 stars, 4 forks
+       14 commits, last change: , 10 stars, 5 forks
 
     TV4/Urushiol:
       Test framework written in Ruby to test varnish-cache routing and caching logic
-       33 commits, last change: 2013-09-27 06:35:41, 7 stars, 1 forks
+       33 commits, last change: , 7 stars, 1 forks
 
     varnish/libvmod-curl:
       cURL bindings for Varnish through the Varnish Module interface
-       84 commits, last change: 2013-10-04 02:32:40, 21 stars, 15 forks
+       88 commits, last change: , 22 stars, 18 forks
 
     varnish/libvmod-var:
       Variable support VMOD
-       48 commits, last change: 2013-10-03 06:51:52, 15 stars, 6 forks
+       56 commits, last change: , 18 stars, 11 forks
 
     varnish/newrelic_varnish_plugin:
       Integration plugin between Varnish and New Relic
-       26 commits, last change: 2013-11-13 02:27:08, 12 stars, 8 forks
+       26 commits, last change: , 15 stars, 9 forks
 
     varnish/vagent2:
-      With a license to ... err.. manage Varnish
-       416 commits, last change: 2013-11-20 02:28:41, 83 stars, 12 forks
+
+       460 commits, last change: , 105 stars, 17 forks
 
     varnish/Varnish-Book:
       Varnish Tutorial and training material
-       325 commits, last change: 2013-10-14 02:52:40, 82 stars, 17 forks
+       326 commits, last change: , 94 stars, 22 forks
 
     varnish/varnishgather:
       Information gathering tool for Varnish
-       45 commits, last change: 2013-10-15 01:33:33, 10 stars, 3 forks
+       58 commits, last change: , 11 stars, 3 forks
 
     vimeo/libvmod-boltsort:
       A fast Varnish module for sorting query string parameters.
-       6 commits, last change: 2013-11-06 04:44:48, 20 stars, 3 forks
+       6 commits, last change: , 22 stars, 5 forks
 
     xcir/C81-VarnishCache-inline-C-VMOD-guidebook:
 
@@ -335,13 +335,13 @@
 
     xcir/libvmod-ldap:
       LDAP module for Varnish
-       23 commits, last change: , 9 stars, 0 forks
+       23 commits, last change: , 11 stars, 0 forks
 
     xcir/libvmod-parsereq:
       parsing post,get,cookie data
-       98 commits, last change: 2013-08-04 10:26:32, 21 stars, 6 forks
+       98 commits, last change: , 24 stars, 5 forks
 
     xcir/vsltrans:
 
-       14 commits, last change: 2013-06-24 08:14:21, 5 stars, 1 forks
+       14 commits, last change: , 9 stars, 1 forks
 <!-- PROJECTS_LIST_END -->
