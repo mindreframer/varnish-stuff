@@ -321,6 +321,10 @@
       Information gathering tool for Varnish
        58 commits, last change: , 11 stars, 3 forks
 
+    vclfiddle/vclfiddle:
+
+       241 commits, last change: 2014-11-21 - 10:21, 9 stars, 3 forks
+
     vimeo/libvmod-boltsort:
       A fast Varnish module for sorting query string parameters.
        6 commits, last change: , 22 stars, 5 forks
